@@ -29,18 +29,22 @@
 </head>
 
 <script>
-    //给首页index.html上传时间
-    $("li[id='Dates']").html(new Date().toLocaleDateString())
 
-    setInterval(function(){
+    $(function () {
+        //给首页index.html上传时间
+        $("li[id='Dates']").html(new Date().toLocaleDateString())
 
-        var now = new Date();
-        $("li[class='hours']").html(now.getHours())
-        $("li[class='mins']").html(now.getMinutes())
-        $("li[class='secs']").html(now.getSeconds())
+        setInterval(function(){
+
+            var now = new Date();
+            $("li[class='hours']").html(now.getHours())
+            $("li[class='mins']").html(now.getMinutes())
+            $("li[class='secs']").html(now.getSeconds())
 
 
-    },1000);
+        },1000);
+    })
+
 </script>
 
 
