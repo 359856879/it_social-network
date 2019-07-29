@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <!--<meta name="renderer" content="webkit">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <link rel="stylesheet" href="assets/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+
+</head>
+<body>
+
+<div class="layui-form" action="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">复选框</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="like" title="写作">
+            <input type="checkbox" name="like" title="阅读">
+            <input type="checkbox" name="like" title="发呆">
+        </div>
+    </div>
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label">原始复选框</label>
+
+        <div class="layui-input-block">
+            <input type="checkbox" name="like1" lay-skin="primary" title="写作" checked="">
+            <input type="checkbox" name="like1" lay-skin="primary" title="阅读">
+            <input type="checkbox" name="like1" lay-skin="primary" title="游戏" disabled="">
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+<script src="assets/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>
