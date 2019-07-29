@@ -349,7 +349,7 @@ h2.headline.text-info {
         margin-bottom: 40px;
     }
 }
-/* User name [optional] */
+/* com.czxy.domain.User name [optional] */
  .lockscreen .lockscreen-name {
     text-align: center;
     font-weight: 600;
@@ -373,7 +373,7 @@ h2.headline.text-info {
 .lockscreen-item:after {
     clear: both;
 }
-/* User image */
+/* com.czxy.domain.User image */
  .lockscreen-item > .lockscreen-image {
     position: absolute;
     left: -10px;
