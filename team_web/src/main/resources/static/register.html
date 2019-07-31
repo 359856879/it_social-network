@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--复制过来的-->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!--<link rel="stylesheet" href="assets/css/loader-style.css">-->
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/js/progress-bar/number-pb.css">
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+
+    <link rel="stylesheet" href="assets/css/layui.css" media="all">
+
+    <style type="text/css">
+        canvas#canvas4 {
+            position: relative;
+            /*top: 20px;*/
+        }
+
+        #ddd{
+            height:200px;
+            width:2300px;
+        }
+
+    </style>
+
+    <link rel="shortcut icon" href="assets/ico/minus.png">
+
+    <script src="assets/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+    <script>
+
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+
+
+            //日期
+            laydate.render({
+                elem: '#date'
+            });
+            laydate.render({
+                elem: '#date1'
+            });
+
+
+        });
+
+
+    </script>
+
+    <script>
+        // 自定义jquery的方法，将Form表单中的内容转换成json
+        $.fn.serializeJson=function(){
+            var serializeObj={};
+            var array=this.serializeArray();
+            var str=this.serialize();
+            $(array).each(function(){
+                if(serializeObj[this.name]){
+                    if($.isArray(serializeObj[this.name])){
+                        serializeObj[this.name].push(this.value);
+                    }else{
+                        serializeObj[this.name]=[serializeObj[this.name],this.value];
+                    }
+                }else{
+                    serializeObj[this.name]=this.value;
+                }
+            });
+            return serializeObj;
+        };
+
+        //点击注册按钮后触发以下逻辑代码
+        function Regist() {
+            //直接获取网站后面的id
+            var id = location.search.split("=")[1]
+            //把form的里需要的数据转换成json
+            var params = $("#for1").serializeJson();
+            var par =  JSON.stringify(params)
+            //发送ajax
+            $.ajax({
+                url:"/R/Register/"+id,
+                data:params,
+                type:"post",
+                statusCode:{
+                    200:function () {
+                        location.href="login.html"
+                    },
+                    500:function () {
+
+                    }
+                }
+            })
+        }
+
+        function check() {
+            //获取两次输入的密码
+            var pas = $("#pas").val()
+            var pass =  $("#pass").val()
+
+            if(pass==pas){
+
+                $("#tsp").html("<font color='#7fff00'>两次密码一致</font>")
+            }else {
+                $("#tsp").html("<font color='red'>两次密码不一致</font>")
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div id="ddd" >
+    <div class="col-md-9 personal-info">
+        <div class="alert alert-info alert-dismissable">
+            <a class="panel-close close" data-dismiss="alert">×</a>
+            <i class="fa fa-coffee"></i>
+            这是注册页面,上帝</br>
+            <strong></strong>只要您在这注册了,我们马上对您进行360°无死角跪舔爹您注册加入我们应用吧😊
+        </div>
+
+        <h3>注册信息</h3>
+
+
+        <form class="form-horizontal" role="form" id="for1">
+
+
+        <div class="form-group">
+            <label class="col-lg-3 control-label">用户名:</label>
+            <div class="col-lg-8">
+                <input class="form-control"  name="username" style="width: 400px"  type="text">
+            </div>
+        </div>
+         <div class="form-group">
+                <label class="col-lg-3 control-label">昵称:</label>
+                <div class="col-lg-8">
+                    <input class="form-control"  name="username" style="width: 400px"  type="text">
+                </div>
+         </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">密码:</label>
+            <div class="col-lg-8">
+                <input class="form-control" id="pas"  name="userpassword" style="width: 400px" value="" type="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">确认密码:</label>
+            <div class="col-lg-8">
+                <input class="form-control" id="pass" name="" onblur="check()" style="width: 400px" value="" type="password">
+            </div>
+        </div>
+
+        <div class="form-group">
+                <label class="col-lg-3 control-label">邮箱:</label>
+                <div class="col-lg-8">
+                    <input class="form-control" id="pass" name="" style="width: 400px" value="" type="password">
+                </div>
+         </div>
+
+
+
+        <!--确认密码是否两次一致输入-->
+        <div class="form-group">
+            <label class="col-lg-3 control-label"></label>
+            <div id="tsp"></div>
+        </div>
+
+            <div class="form-group" style="height: 20px; width:1010px;">
+
+                <label class="col-lg-3 control-label"></label>
+                <div class="col-lg-8">
+
+                    <input class="form-control" id="pass" name="" onblur="check()" style="width: 400px" value="" type="hidden">
+
+                    <div class="layui-form" action="">
+
+                        <div class="layui-form-item" >
+                            <label class="col-lg-3 control-label">技能: </label>
+
+                            <div class="layui-input-block">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                <input type="checkbox" name="like" title="Java">
+                                <input type="checkbox" name="like" title="Python">
+                                <input type="checkbox" name="like" title="大数据">
+                                <input type="checkbox" name="like" title="全栈">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" pane="">
+                            <label class="col-lg-3 control-label">技能:</label>
+
+                            <div class="layui-input-block">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                <input type="checkbox" name="like1" lay-skin="primary" title="唱歌">
+                                <input type="checkbox" name="like1" lay-skin="primary" title="看书">
+                                <input type="checkbox" name="like1" lay-skin="primary" title="听音乐">
+                                <input type="checkbox" name="like1" lay-skin="primary" title="敲代码">
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    123456
+                </div>
+            </div>
+
+        <!--多选-->
+            <div class="form-group" style="height: 20px; width:1010px;">
+
+
+                <label class="col-lg-3 control-label"></label>
+                <div class="col-lg-8">
+                    <input class="form-control" id="pass" name=""  style="width: 400px" value="" type="hidden">
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-8">
+                            <input class="btn btn-primary" value="注册" onclick="Regist()" type="button">
+                            <span></span>
+                            <input class="btn btn-default" value="返回" onclick="history.back(-1)"  type="reset">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    </div>
+
+</body>
+</html>
