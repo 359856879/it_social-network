@@ -29,22 +29,69 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 </head>
+<script>
+
+    $(function () {
+
+        $.ajax({
+
+
+            url:"/user/findUser",
+            type:"get",
+
+            dataType:"JSON",
+            statusCode:{
+                200:function (rel) {
+
+                    $("ul[id='myimgs']").prepend("  <li>\n" +
+                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
+                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
+                        "                        </a>\n" +
+                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
+                        "\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html\">\n" +
+                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html#update\">\n" +
+                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li class=\"divider\"></li>\n" +
+                        "\n" +
+                        "                        </ul>\n" +
+                        "                    </li>")
+
+                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
+                        "                                <strong>"+rel.username+"!</strong>")
+
+                },
+                500:function () {
+
+                    window.location.href="/500.html";
+
+
+                }
+            }
+        })
+
+    })
+
+</script>
 
 <script>
-    $(function () {
-        //给当前页面上传时间
-        $("li[id='Dates']").html(new Date().toLocaleDateString())
+    //给首页index.html上传时间
+    $("li[id='Dates']").html(new Date().toLocaleDateString())
 
-        setInterval(function(){
+    setInterval(function(){
 
-            var now = new Date();
-            $("li[class='hours']").html(now.getHours())
-            $("li[class='mins']").html(now.getMinutes())
-            $("li[class='secs']").html(now.getSeconds())
+        var now = new Date();
+        $("li[class='hours']").html(now.getHours())
+        $("li[class='mins']").html(now.getMinutes())
+        $("li[class='secs']").html(now.getSeconds())
 
 
-        },1000);
-    })
+    },1000);
 </script>
 
 
@@ -203,31 +250,8 @@
                     </ul>
                 </div>
 
-                <ul style="margin-right:0;" class="nav navbar-nav navbar-right">
-                    <li>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" class="admin-pic img-circle" src="http://api.randomuser.me/portraits/thumb/men/10.jpg">Hi, Dave Mattew <b class="caret"></b>
-                        </a>
-                        <ul style="margin-top:14px;" role="menu" class="dropdown-setting dropdown-menu">
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-user"></span>&#160;&#160;My Profile</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-vcard"></span>&#160;&#160;Account Setting</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-lifebuoy"></span>&#160;&#160;Help</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="http://themeforest.net/item/apricot-navigation-admin-dashboard-template/7664475?WT.ac=category_item&WT.z_author=themesmile">
-                                    <span class="entypo-basket"></span>&#160;&#160; Purchase</a>
-                            </li>
-                        </ul>
-                    </li>
+                <ul style="margin-right:0;" id="myimgs" class="nav navbar-nav navbar-right">
+
                     <li>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="icon-gear"></span>&#160;&#160;Setting</a>
@@ -568,9 +592,8 @@
 
                             <div class="alert">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
-                                <span class="tittle-alert entypo-info-circled"></span>
-                                Welcome back,&nbsp;
-                                <strong>Dave mattew!</strong>&nbsp;&nbsp;Your last sig in at Yesterday, 16:54 PM
+                                <span class="tittle-alert entypo-info-circled" id="myspan"></span>
+
                             </div>
 
 
@@ -900,7 +923,7 @@
                                         <td>Instagram</td>
                                         <td class="subject">
                                             <p class="email-summary">
-                                                <strong>com.czxy.domain.User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
+                                                <strong>User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
                                         </td>
                                         <td class="time text-right">Jan 13 at 7:30am</td>
                                     </tr>
@@ -1049,7 +1072,7 @@
                                         <td>Instagram</td>
                                         <td class="subject">
                                             <p class="email-summary">
-                                                <strong>com.czxy.domain.User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
+                                                <strong>User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
                                         </td>
                                         <td class="time text-right">Jan 13 at 7:30am</td>
                                     </tr>
@@ -1200,7 +1223,7 @@
                                         <td>Instagram</td>
                                         <td class="subject">
                                             <p class="email-summary">
-                                                <strong>com.czxy.domain.User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
+                                                <strong>User Interface Conference</strong>Ut enim ad minim veniam, quis nostrud exercitation...</p>
                                         </td>
                                         <td class="time text-right">Jan 13 at 7:30am</td>
                                     </tr>

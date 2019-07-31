@@ -9,21 +9,64 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="assets/js/jquery.min.js"></script>-->
 
    <!--  <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/loader-style.css">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/signin.css">
-
-
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
+
+    <!--<script src="assets/js/jquery-3.4.1.min.js"></script>-->
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script>
+
+        // 自定义jquery的方法，将Form表单中的内容转换成json
+        $.fn.serializeJson=function(){
+            var serializeObj={};
+            var array=this.serializeArray();
+            var str=this.serialize();
+            $(array).each(function(){
+                if(serializeObj[this.name]){
+                    if($.isArray(serializeObj[this.name])){
+                        serializeObj[this.name].push(this.value);
+                    }else{
+                        serializeObj[this.name]=[serializeObj[this.name],this.value];
+                    }
+                }else{
+                    serializeObj[this.name]=this.value;
+                }
+            });
+            return serializeObj;
+        };
+
+        function logins() {
+            //把表单转换成json
+            var params = $("#for1").serializeJson();
+            var par = JSON.stringify(params)
+            alert(params)
+            alert(par)
+            $.ajax({
+                url:"/U/loginUser",
+                type:"get",
+                data:params,
+                statusCode:{
+                    200:function (data) {
+                        alert(data)
+                        location.href="index.html"
+                    },
+                    500:function () {
+                        $("#ts").html("<font color='red'>用户名或者密码错误 </font>")
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 
 <body> 
@@ -53,36 +96,42 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="account-box"> 
-                        <form role="form" action="index.html">
+                        <form role="form" action="index.html" id="for1">
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot email?</a-->
                                 <label for="inputUsernameEmail">用户名</label>
-                                <input type="text" id="inputUsernameEmail" class="form-control">
+                                <input type="text" name="username" id="inputUsernameEmail" class="form-control">
                             </div>
                             <div class="form-group">
                                 <!--a href="#" class="pull-right label-forgot">Forgot password?</a-->
                                 <label for="inputPassword">密码</label>
-                                <input type="password" id="inputPassword" class="form-control">
+                                <input type="password" name="userpassword" id="inputPassword" class="form-control">
+                            </div>
+                            <div>
+                                <span id="ts">
+
+                                </span>
                             </div>
                             <div class="checkbox pull-left">
                                 <label>
                                     <input type="checkbox">记住用户名</label>
                             </div>
-                            <button class="btn btn btn-primary pull-right" type="submit">
+
+                            <button class="btn btn btn-primary pull-right" type="button" onclick="logins()">
                                 登 录
                             </button>
                         </form>
                         <a class="forgotLnk" href="index.html"></a>
                        <div class="or-box">
 
-                            <center><span class="text-center login-with">Login or <b>Sign Up</b></span></center>
+                            <center><span class="text-center login-with">请选择您喜欢的<b>应用注册</b></span></center>
                             <div class="row">
                                 <div class="col-md-6 row-block">
-                                    <a href="index.html" class="btn btn-facebook btn-block">
+                                    <a href="register.html?id=1" class="btn btn-facebook btn-block">
                                         <span class="entypo-facebook space-icon"></span>Facebook</a>
                                 </div>
                                 <div class="col-md-6 row-block">
-                                    <a href="index.html" class="btn btn-twitter btn-block">
+                                    <a href="register.html?id=2" class="btn btn-twitter btn-block">
                                         <span class="entypo-twitter space-icon"></span>Twitter</a>
 
                                 </div>
@@ -90,10 +139,10 @@
                             </div>
                             <div style="margin-top:25px" class="row">
                                 <div class="col-md-6 row-block">
-                                    <a href="index.html" class="btn btn-google btn-block"><span class="entypo-gplus space-icon"></span>Google +</a>
+                                    <a href="register.html?id=3" class="btn btn-google btn-block"><span class="entypo-gplus space-icon"></span>Google +</a>
                                 </div>
                                 <div class="col-md-6 row-block">
-                                    <a href="index.html" class="btn btn-instagram btn-block"><span class="entypo-instagrem space-icon"></span>Instagram</a>
+                                    <a href="register.html?id=4" class="btn btn-instagram btn-block"><span class="entypo-instagrem space-icon"></span>Instagram</a>
                                 </div>
 
                             </div>
@@ -130,7 +179,6 @@
 
 
 
-
     <!-- MAIN EFFECT -->
     <script type="text/javascript" src="assets/js/preloader.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap.js"></script>
@@ -140,6 +188,7 @@
 
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
+
 
 
 

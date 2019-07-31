@@ -10,7 +10,7 @@
     <!-- Le styles -->
 
 
-
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/loader-style.css">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -25,9 +25,6 @@
     }
     </style>
 
-
-
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -35,6 +32,59 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 </head>
+
+<script>
+
+    $(function () {
+
+        $.ajax({
+
+
+            url:"/user/findUser",
+            type:"get",
+
+            dataType:"JSON",
+            statusCode:{
+                200:function (rel) {
+
+                    $("ul[id='myimgs']").prepend("  <li>\n" +
+                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
+                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
+                        "                        </a>\n" +
+                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
+                        "\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html\">\n" +
+                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html#update\">\n" +
+                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li class=\"divider\"></li>\n" +
+                        "\n" +
+                        "                        </ul>\n" +
+                        "                    </li>")
+
+                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
+                        "                                <strong>"+rel.username+"!</strong>")
+
+
+
+                },
+                500:function () {
+
+                    window.location.href="/500.html";
+
+
+                }
+            }
+        })
+
+    })
+
+</script>
+
 
 <body> 
     <!-- Preloader -->
@@ -194,52 +244,14 @@
                     </ul>
                 </div>
 
-                <ul style="margin-right:0;" class="nav navbar-nav navbar-right">
-                    <li>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" class="admin-pic img-circle" src="http://api.randomuser.me/portraits/thumb/men/10.jpg">Hi, Dave Mattew <b class="caret"></b>
-                        </a>
-                        <ul style="margin-top:14px;" role="menu" class="dropdown-setting dropdown-menu">
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-user"></span>&#160;&#160;My Profile</a>
-                            </li>
-                            <li>
-                                <a href="/profile.html#update">
-                                    <span class="entypo-vcard"></span>&#160;&#160;Account Setting</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-lifebuoy"></span>&#160;&#160;Help</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="http://themeforest.net/item/apricot-navigation-admin-dashboard-template/7664475?WT.ac=category_item&WT.z_author=themesmile">
-                                    <span class="entypo-basket"></span>&#160;&#160; Purchase</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="icon-gear"></span>&#160;&#160;Setting</a>
-                        <ul role="menu" class="dropdown-setting dropdown-menu">
 
-                            <li class="theme-bg">
-                                <div id="button-bg"></div>
-                                <div id="button-bg2"></div>
-                                <div id="button-bg3"></div>
-                                <div id="button-bg5"></div>
-                                <div id="button-bg6"></div>
-                                <div id="button-bg7"></div>
-                                <div id="button-bg8"></div>
-                                <div id="button-bg9"></div>
-                                <div id="button-bg10"></div>
-                                <div id="button-bg11"></div>
-                                <div id="button-bg12"></div>
-                                <div id="button-bg13"></div>
-                            </li>
-                        </ul>
-                    </li>
+
+
+
+                <ul style="margin-right:0;" id="myimgs" class="nav navbar-nav navbar-right">
+
+                    <!-- 用户个人头像 -->
+
                     <li class="hidden-xs">
                         <a class="toggle-left" href="#">
                             <span style="font-size:20px;" class="entypo-list-add"></span>
@@ -562,9 +574,8 @@
 
                             <div class="alert">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
-                                <span class="tittle-alert entypo-info-circled"></span>
-                                Welcome back,&nbsp;
-                                <strong>Dave mattew!</strong>&nbsp;&nbsp;Your last sig in at Yesterday, 16:54 PM
+                                <span class="tittle-alert entypo-info-circled" id="myspan"></span>
+
                             </div>
 
 

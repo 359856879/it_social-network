@@ -39,13 +39,13 @@ public class UserServlet {
 
         try {
             //从session域中获取到user对象
-            User user1 = userService.findUser(2);
-            request.getSession().setAttribute("user",user1);
+            User user = (User) request.getSession().getAttribute("user");
 
-            System.out.println("域中的对象:"+user1);
+            System.out.println("页面展示:"+user);
 
             //把需要展示的对象返回
-            return new ResponseEntity<>(user1,HttpStatus.OK);
+            return new ResponseEntity<>(user,HttpStatus.OK);
+
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class UserServlet {
     @PostMapping("/updates")
     public ResponseEntity<Void> updateInfo(MultipartFile file,User user,HttpServletRequest request) throws IOException {
 
-        System.out.println("需要更新对象user："+user);
+        System.out.println("需要更新对象user12："+user);
         System.out.println(file.getOriginalFilename());
 
         //从域中获取到user对象
@@ -74,8 +74,11 @@ public class UserServlet {
         //调用工程的方法实现更新部分属性的需求
         try {
 
-            userService.update(user,"assets\\img\\it\\"+filename,user1.getUserid());
+            userService.update(user,"\\assets\\img\\it\\"+filename,user1.getUserid());
 
+            User user2 = userService.findUser(user1.getUserid());
+
+            request.getSession().setAttribute("user",user2);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 

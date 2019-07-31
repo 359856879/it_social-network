@@ -77,8 +77,8 @@
             //直接获取网站后面的id
             var id = location.search.split("=")[1]
             //把form的里需要的数据转换成json
-            var params = $("#for1").serializeJson();
-            var par =  JSON.stringify(params)
+            var params = $("#for1").serializeArray()
+            // var par =  JSON.stringify(params)
             //发送ajax
             $.ajax({
                 url:"/R/Register/"+id,
@@ -95,16 +95,51 @@
             })
         }
 
+        //判断用户两次密码是否一致
         function check() {
             //获取两次输入的密码
             var pas = $("#pas").val()
             var pass =  $("#pass").val()
+            //判断密码是否为空
+            if(pas.length == 0 || pass == 0){
+                $("#tsp").html("<font color='red'>其实小心点还是好的运气好电脑还在所以咱们还是设个密码吧</font>")
+                $("#zc1").attr("disabled", true);
+            }else if(pass==pas){
+                    $("#tsp").html("<font color='#7fff00'>两次密码一致</font>")
+                    $("#zc1").attr("disabled", false);
+                }else {
+                    $("#tsp").html("<font color='red'>两次密码不一致</font>")
+                    $("#zc1").attr("disabled", true);
+                }
 
-            if(pass==pas){
-
-                $("#tsp").html("<font color='#7fff00'>两次密码一致</font>")
+        }
+        //判断用户的登录名是否为空或者与数据库中的重复
+        function na() {
+            var name = $("input[name=username]").val()
+            if(name.length ==0){
+                $("#namee").html("<font color='red'>登录名不能为空</font>")
+                $("#zc1").attr("disabled", true);
             }else {
-                $("#tsp").html("<font color='red'>两次密码不一致</font>")
+                $.ajax({
+                    url:"/R/getUsername",
+                    data:{
+                        name:$("input[name=username]").val()
+                    },
+                    type:"get",
+                    statusCode:{
+                        200:function () {
+                            $("#namee").html("用户名可以使用")
+                            $("#zc1").attr("disabled", false);
+                        },
+                        500:function () {
+                            $("#namee").html("<font color='red'>您的文采和别人一样优秀连名字都想的一样</font>")
+                            $("#zc1").attr("disabled", true);
+                        }
+                    }
+                })
+
+                $("#namee").html("")
+                $("#zc1").attr("disabled", false);
             }
         }
 
@@ -119,7 +154,7 @@
             <a class="panel-close close" data-dismiss="alert">×</a>
             <i class="fa fa-coffee"></i>
             这是注册页面,上帝</br>
-            <strong></strong>只要您在这注册了,我们马上对您进行360°无死角跪舔爹您注册加入我们应用吧😊
+            <strong></strong>只要您在这注册了,我们马上对您进行360°无死角跪舔请注册加入我们应用吧😊🎈
         </div>
 
         <h3>注册信息</h3>
@@ -129,15 +164,16 @@
 
 
         <div class="form-group">
-            <label class="col-lg-3 control-label">用户名:</label>
+            <label class="col-lg-3 control-label">用户登录名:</label>
             <div class="col-lg-8">
-                <input class="form-control"  name="username" style="width: 400px"  type="text">
+                <input class="form-control"  name="username"  onblur="na()" style="width: 400px"  type="text">
+                <div id="namee"></div>
             </div>
         </div>
          <div class="form-group">
-                <label class="col-lg-3 control-label">昵称:</label>
+                <label class="col-lg-3 control-label">用户昵称:</label>
                 <div class="col-lg-8">
-                    <input class="form-control"  name="username" style="width: 400px"  type="text">
+                    <input class="form-control" name="usernickname" style="width: 400px"  type="text">
                 </div>
          </div>
         <div class="form-group">
@@ -153,51 +189,49 @@
             </div>
         </div>
 
+            <!--确认密码是否两次一致输入-->
+            <div class="form-group">
+                <label class="col-lg-3 control-label"></label>
+                <div id="tsp"></div>
+            </div>
+
         <div class="form-group">
                 <label class="col-lg-3 control-label">邮箱:</label>
                 <div class="col-lg-8">
-                    <input class="form-control" id="pass" name="" style="width: 400px" value="" type="password">
+                    <input class="form-control"  name="useremail" style="width: 400px" value="" type="text">
                 </div>
          </div>
-
-
-
-        <!--确认密码是否两次一致输入-->
-        <div class="form-group">
-            <label class="col-lg-3 control-label"></label>
-            <div id="tsp"></div>
-        </div>
 
             <div class="form-group" style="height: 20px; width:1010px;">
 
                 <label class="col-lg-3 control-label"></label>
                 <div class="col-lg-8">
 
-                    <input class="form-control" id="pass" name="" onblur="check()" style="width: 400px" value="" type="hidden">
+                    <input class="form-control"  name="" onblur="check()" style="width: 400px" value="" type="hidden">
 
                     <div class="layui-form" action="">
 
                         <div class="layui-form-item" >
                             <label class="col-lg-3 control-label">技能: </label>
 
-                            <div class="layui-input-block">
+                            <div class="layui-input-block" >
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                <input type="checkbox" name="like" title="Java">
-                                <input type="checkbox" name="like" title="Python">
-                                <input type="checkbox" name="like" title="大数据">
-                                <input type="checkbox" name="like" title="全栈">
+                                <input type="checkbox" value="Java" name="jineng" title="Java">
+                                <input type="checkbox" value="Python" name="jineng" title="Python">
+                                <input type="checkbox" value="大数据" name="jineng" title="大数据">
+                                <input type="checkbox" value="全栈" name="jineng" title="全栈">
                             </div>
                         </div>
 
                         <div class="layui-form-item" pane="">
-                            <label class="col-lg-3 control-label">技能:</label>
+                            <label class="col-lg-3 control-label">爱好:</label>
 
                             <div class="layui-input-block">
                                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                <input type="checkbox" name="like1" lay-skin="primary" title="唱歌">
-                                <input type="checkbox" name="like1" lay-skin="primary" title="看书">
-                                <input type="checkbox" name="like1" lay-skin="primary" title="听音乐">
-                                <input type="checkbox" name="like1" lay-skin="primary" title="敲代码">
+                                <input type="checkbox" name="hobby" value="唱歌" lay-skin="primary" title="唱歌">
+                                <input type="checkbox" name="hobby" value="看书" lay-skin="primary" title="看书">
+                                <input type="checkbox" name="hobby" value="听音乐" lay-skin="primary" title="听音乐">
+                                <input type="checkbox" name="hobby" value="敲代码" lay-skin="primary" title="敲代码">
 
                             </div>
 
@@ -220,12 +254,12 @@
 
                 <label class="col-lg-3 control-label"></label>
                 <div class="col-lg-8">
-                    <input class="form-control" id="pass" name=""  style="width: 400px" value="" type="hidden">
+                    <input class="form-control"  name=""  style="width: 400px" value="" type="hidden">
 
                     <div class="form-group">
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-8">
-                            <input class="btn btn-primary" value="注册" onclick="Regist()" type="button">
+                            <input class="btn btn-primary" id="zc1"  value="注册"  onclick="Regist()" type="button">
                             <span></span>
                             <input class="btn btn-default" value="返回" onclick="history.back(-1)"  type="reset">
                         </div>

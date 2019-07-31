@@ -14,7 +14,7 @@
     }
     </style>
     <!-- Le styles -->
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.js"></script>
 
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/loader-style.css">
@@ -34,6 +34,58 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 </head>
+
+<script>
+
+    $(function () {
+
+        $.ajax({
+
+
+            url:"/user/findUser",
+            type:"get",
+
+            dataType:"JSON",
+            statusCode:{
+                200:function (rel) {
+
+
+                    $("ul[id='myimgs']").prepend("  <li>\n" +
+                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
+                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
+                        "                        </a>\n" +
+                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
+                        "\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html\">\n" +
+                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html#update\">\n" +
+                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li class=\"divider\"></li>\n" +
+                        "\n" +
+                        "                        </ul>\n" +
+                        "                    </li>")
+
+                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
+                        "                                <strong>"+rel.username+"!</strong>")
+
+                },
+                500:function () {
+
+
+                    window.location.href="/500.html";
+
+                }
+            }
+        })
+
+    })
+
+</script>
+
 
 <body id="lock">
     <!-- Preloader -->
