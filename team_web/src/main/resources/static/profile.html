@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="assets/css/bootstrap.css">
 
     <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/media.css">
+    <link rel="stylesheet" href="assets/css/social.css">
 
 
 
@@ -145,7 +147,7 @@
                     $("div[id='mydiv01']").append(" <div class=\"col-xs-12 col-sm-8 profile-name\">\n" +
                         "                                <h2>"+rel.username+"\n" +
                         "                                    <span class=\"pull-right social-profile\">\n" +
-                        "                                            <i class=\"entypo-facebook-circled\"></i>  <i class=\"entypo-twitter-circled\"></i>  <i class=\"entypo-linkedin-circled\"></i>  <i class=\"entypo-github-circled\"></i>  <i class=\"entypo-gplus-circled\"></i>\n" +
+                        "                                        <span id='s01'> <i class=\"entypo-facebook-circled\"></i> </span><span id='s02'> <i class=\"entypo-twitter-circled\"></i> </span><span id='s03'> <i class=\"entypo-linkedin-circled\"></i> </span><span id='s04'><i class=\"entypo-github-circled\"></i></span> <span id='s05'> <i class=\"entypo-gplus-circled\"></i></span>\n" +
                         "                                        </span>\n" +
                         "                                </h2>\n" +
                         "                                <hr>\n" +
@@ -198,6 +200,30 @@
 
                     }
 
+
+                    //点亮图标
+
+
+                    if (rel.usertypeid ==1){
+
+                        alert(rel.usertypeid)
+
+                        $("span[id='s01']").html(" <a href=\"#\">\n" +
+                            "                                    <span class=\"entypo-facebook-circled\"></span>\n" +
+                            "                                </a>")
+                    }
+
+                    if (rel.usertypeid ==2){
+                        $("span[id='s02']").html("<a class=\"tweet-link\" href=\"#\">\n" +
+                            "                                    <span class=\"entypo-twitter-circled\"></span>\n" +
+                            "                                </a>\n")
+                    }
+
+                    if (rel.usertypeid ==4){
+                        $("span[id='s03']").html("   <a class=\"gplus-textcolor\" href=\"#\">\n" +
+                            "                                    <span class=\"entypo-instagrem\"></span>\n" +
+                            "                                </a>\n")
+                    }
                 }
                 }
 
@@ -1227,7 +1253,7 @@
     <script type="text/javascript" src="assets/js/app.js"></script>
     <script type="text/javascript" src="assets/js/load.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
-
+    <script src="assets/js/flatvideo/jquery.fitvids.js"></script>
 
 </div></body>
 
