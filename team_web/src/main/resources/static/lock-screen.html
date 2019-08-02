@@ -8,84 +8,72 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <style type="text/css">
+        #ts1{
+            margin-left:250px;
+        }
     body {
         overflow:hidden!important;
         padding-top: 120px;
     }
     </style>
     <!-- Le styles -->
-    <script type="text/javascript" src="assets/js/jquery.js"></script>
-
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/loader-style.css">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/signin.css">
     <link rel="stylesheet" href="assets/css/extra-pages.css">
-
-
-
-
-
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
-</head>
 
-<script>
-
-    $(function () {
-
-        $.ajax({
-
-
-            url:"/user/findUser",
-            type:"get",
-
-            dataType:"JSON",
-            statusCode:{
-                200:function (rel) {
-
-
-                    $("ul[id='myimgs']").prepend("  <li>\n" +
-                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
-                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
-                        "                        </a>\n" +
-                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
-                        "\n" +
-                        "                            <li>\n" +
-                        "                                <a href=\"/profile.html\">\n" +
-                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
-                        "                            </li>\n" +
-                        "                            <li>\n" +
-                        "                                <a href=\"/profile.html#update\">\n" +
-                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
-                        "                            </li>\n" +
-                        "                            <li class=\"divider\"></li>\n" +
-                        "\n" +
-                        "                        </ul>\n" +
-                        "                    </li>")
-
-                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
-                        "                                <strong>"+rel.username+"!</strong>")
-
-                },
-                500:function () {
-
-
-                    window.location.href="/500.html";
-
+    <!--页面加载完成执行后台方法 获得原先登录的对象-->
+   <script type="text/javascript">
+       $(function () {
+            $.ajax({
+                url:"/U/getUser",
+                type:"get",
+                dataType:"json",
+                success:function (rel) {
+                    $(rel).each(function (index, ele) {
+                        alert(rel)
+                        $("#Us1").append("<div class=\"lockscreen-name\">"+ele.username+"</div>\n" +
+                            "        <div class=\"lockscreen-image\">\n" +
+                            "            <img src="+ele.userphoto+" alt=\"user image\">\n" +
+                            "        </div>")
+                    })
                 }
-            }
-        })
+            })
+       })
 
-    })
+       function logins() {
+           var pa = $("#pass").val()
+           if(pa.length == 0){
+               $("#ts1").html("<font color='red'>主人您还没输密码哦,乖巧的我😀</font>")
 
-</script>
+           }else {
+               $.ajax({
+                   url:"/U/login",
+                   type:"get",
+                   data:{pas:$("#pass").val()},
+                   statusCode:{
+                       200:function () {
+                           location.href="index.html"
+                       },
+                       500:function () {
+                           $("#ts1").html("<font color='red'>不要偷我😭,我喜欢这个主人</font>")
+                       }
+                   }
+               })
+           }
 
+
+       }
+   </script>
+</head>
 
 <body id="lock">
     <!-- Preloader -->
@@ -97,18 +85,24 @@
 
 
     <!-- Main content -->
-    <section class="page-error">
+    <section class="page-error" >
 
         <div class="headline-lock text-center" id="time">
             <span></span>
             <!-- Time auto generated by js -->
         </div>
-        <!-- /.headline -->
-        <div class="lockscreen-name">John Doe</div>
-        <div class="lockscreen-image">
-            <img src="http://api.randomuser.me/portraits/thumb/men/41.jpg" alt="user image">
+
+        <div id="Us1">
+
         </div>
-        <!-- com.czxy.domain.User name -->
+        <!-- /.headline -->
+        <!--原先的页面-->
+
+        <!--<div class="lockscreen-name">John Doe</div>-->
+        <!--<div class="lockscreen-image">-->
+            <!--<img src="http://api.randomuser.me/portraits/thumb/men/41.jpg" alt="user image">-->
+        <!--</div>-->
+         <!--com.czxy.domain.User name -->
 
 
         <!-- START LOCK SCREEN ITEM -->
@@ -119,17 +113,27 @@
             <div class="lockscreen-credentials">
 
                 <div class="input-group">
-                    <input type="password" class="form-control" placeholder="password">
+                    <input type="password" id="pass" class="form-control" placeholder="password">
                     <div class="input-group-btn">
-                        <button class="btn btn-flat"><i class="fa fa-arrow-right text-muted"></i>
+                        <button class="btn btn-flat" onclick="logins()"><i class="fa fa-arrow-right text-muted" ></i>
+
                         </button>
                     </div>
+
                 </div>
             </div>
+
             <!-- /.lockscreen credentials -->
 
         </div>
+        <!--提示-->
+        <div id="ts1" >
+
+            </div>
+
         <!-- /.lockscreen-item -->
+
+
 
         <div class="lockscreen-link">
             <a class="lock-link" href="login.html">Or sign in as a different user</a>

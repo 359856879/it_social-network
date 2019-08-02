@@ -28,7 +28,56 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 </head>
+<script>
+    //十秒钟页面不动跳转到保护页面
+    function ScreenSaver(settings){
 
+        this.settings = settings;
+        this.nTimeout = this.settings.timeout;
+        document.body.screenSaver = this;
+        // link in to body events
+        document.body.onmousemove = ScreenSaver.prototype.onevent;
+        document.body.onmousedown = ScreenSaver.prototype.onevent;
+        document.body.onkeydown = ScreenSaver.prototype.onevent;
+        document.body.onkeypress = ScreenSaver.prototype.onevent;
+
+        var pThis = this;
+        var f = function(){pThis.timeout();}
+        this.timerID = window.setTimeout(f, this.nTimeout);
+    }
+
+    ScreenSaver.prototype.timeout = function(){
+
+        if ( !this.saver ){
+            //输入想要跳转的网站
+            window.location = 'http://localhost:8080/lock-screen.html';
+        }
+
+    }
+    ScreenSaver.prototype.signal = function(){
+        // alert("鼠标或者键盘在动")
+        if ( this.saver ){
+            this.saver.stop();
+        }
+
+        window.clearTimeout(this.timerID);
+        var pThis = this;
+        var f = function(){pThis.timeout();}
+        this.timerID = window.setTimeout(f, this.nTimeout);
+    }
+    ScreenSaver.prototype.onevent = function(e){
+        this.screenSaver.signal();
+    }
+    var saver;
+    function initScreenSaver(){
+        //这里就是鼠标和键盘无触发时间  到了之后会根据输入的网站跳转
+        saver = new ScreenSaver({timeout:10000});
+    }
+    $(function () {
+
+        initScreenSaver();
+    })
+</script>
 
 <script>
 
@@ -314,7 +363,7 @@
 
                     <li class="dropdown">
 
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i style="font-size:20px;" class="icon-conversation"></i><div class="noft-red">23</div></a>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i style="font-size:20px;" class="icon-conversation"></i><div class="noft-red"></div></a>
 
 
                         <ul style="margin: 11px 0 0 9px;" role="menu" class="dropdown-menu dropdown-wrap">
@@ -355,7 +404,7 @@
                     </li>
                     <li>
 
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i style="font-size:19px;" class="icon-warning tooltitle"></i><div class="noft-green">5</div></a>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i style="font-size:19px;" class="icon-warning tooltitle"></i><div class="noft-green"></div></a>
                         <ul style="margin: 12px 0 0 0;" role="menu" class="dropdown-menu dropdown-wrap">
                             <li>
                                 <a href="#">
@@ -1119,9 +1168,7 @@
                     <p id="spanDate">
                     <p id="clock">
                 </div>
-                <div class="copyright">Make with Love
-                     <span class="entypo-heart"></span>Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> All Rights Reserved</div>
-                <div class="devider-footer"></div>
+
 
             </div>
             <!-- / END OF FOOTER -->

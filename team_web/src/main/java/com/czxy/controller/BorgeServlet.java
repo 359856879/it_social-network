@@ -1,14 +1,17 @@
 package com.czxy.controller;
 
 import com.czxy.domain.Borge;
+import com.czxy.domain.User;
 import com.czxy.service.BorgeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -76,6 +79,28 @@ public class BorgeServlet {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
+
+    }
+
+    @GetMapping("publish/{id}/{info}")
+    public ResponseEntity<Void> publish(@PathVariable("id") Integer id, @PathVariable("info") String info,HttpServletRequest request){
+
+        //从域中获取当前登录用户
+        User user = (User) request.getSession().getAttribute("user");
+        System.out.println("域中的对象:"+user);
+
+        try {
+            borgeService.addDis(id,user.getUserid(),info);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+
+
 
 
     }

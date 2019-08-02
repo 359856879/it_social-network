@@ -12,6 +12,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("R")
+@SuppressWarnings("all")
 public class RegistrController {
 
     //私有化Service
@@ -42,8 +43,18 @@ public class RegistrController {
         //创建一个技能字符串
         String ji = "";
         //遍历这个数组并转换成String字符串拼接到相对应的对象中
+        int num=jineng.length;
+        int count=0;
         for (String s : jineng) {
-            ji += s+",";
+            count++;
+            if (count!=num){
+                ji += s+",";
+            }else{
+                ji+=s;
+            }
+
+
+
         }
 //        System.out.println("打印技能遍历添入的字符串:"+ji);
         user1.setUserskills(ji); //赋值用户的技能
@@ -52,8 +63,20 @@ public class RegistrController {
         //创建一个字符串
         String hobbys = "";
         //遍历爱好数组并转换成字符串
+        int nums=hobby.length;
+        int counts=0;
+
         for (String h : hobby) {
-            hobbys += h+",";
+            counts++;
+
+            if (counts!=nums){
+                hobbys += h+",";
+
+            }else{
+
+                hobbys += h;
+            }
+
         }
         user1.setUserhobby(hobbys);
 

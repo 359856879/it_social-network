@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -142,6 +143,24 @@ public class BorgeServicelmpl implements BorgeService{
         }
 
         return borges;
+    }
+
+    @Override
+    public void addDis(Integer bid,Integer uid,String info) {
+
+        //新建一个评论对象
+        Discuss discuss = new Discuss();
+        discuss.setUserid(uid);
+        discuss.setUpuserid(0);
+        discuss.setDiscusslevel(1);
+        discuss.setTodiscussid(bid);
+        discuss.setDiscusstime(new Date());
+        discuss.setDiscussmsg(info);
+
+        //调用工程方法,完成信息的提交
+        discussMapper.insert(discuss);
+
+
     }
 
 }

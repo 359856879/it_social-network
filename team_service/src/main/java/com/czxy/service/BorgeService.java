@@ -22,4 +22,6 @@ public interface BorgeService {
     public List<Borge> findInfos();
 
 
+    public void addDis(Integer bid,Integer uid,String info);
+
 }
