@@ -49,15 +49,14 @@
             //把表单转换成json
             var params = $("#for1").serializeJson();
             var par = JSON.stringify(params)
-            alert(params)
-            alert(par)
+
             $.ajax({
                 url:"/U/loginUser",
                 type:"get",
                 data:params,
                 statusCode:{
                     200:function (data) {
-                        alert(data)
+
                         location.href="index.html"
                     },
                     500:function () {

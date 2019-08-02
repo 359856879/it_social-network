@@ -3,6 +3,7 @@ package com.czxy.domain;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Auther: 传智新星
@@ -41,6 +42,9 @@ public class User {
 
     private String userip;    //用户当前登录ip
 
+    private List<Discuss> discusses;   //每个用户里都会包含一个属于他底下的 评论对象//                                                      \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             >
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -58,6 +62,7 @@ public class User {
                 ", userhobby='" + userhobby + '\'' +
                 ", userskills='" + userskills + '\'' +
                 ", userip='" + userip + '\'' +
+                ", discusses=" + discusses +
                 '}';
     }
 
@@ -173,11 +178,18 @@ public class User {
         this.userip = userip;
     }
 
+    public List<Discuss> getDiscusses() {
+        return discusses;
+    }
+
+    public void setDiscusses(List<Discuss> discusses) {
+        this.discusses = discusses;
+    }
+
     public User() {
     }
 
-
-    public User(Integer userid, String username, String userflname, String usernickname, String userpassword, Integer usertypeid, String useremail, Date userregister, Date userap, Date userlp, String userphoto, String userhobby, String userskills, String userip) {
+    public User(Integer userid, String username, String userflname, String usernickname, String userpassword, Integer usertypeid, String useremail, Date userregister, Date userap, Date userlp, String userphoto, String userhobby, String userskills, String userip, List<Discuss> discusses) {
         this.userid = userid;
         this.username = username;
         this.userflname = userflname;
@@ -192,5 +204,6 @@ public class User {
         this.userhobby = userhobby;
         this.userskills = userskills;
         this.userip = userip;
+        this.discusses = discusses;
     }
 }

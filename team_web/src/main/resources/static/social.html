@@ -27,20 +27,74 @@
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 </head>
-
 <script>
-    //给首页index.html上传时间
-    $("li[id='Dates']").html(new Date().toLocaleDateString())
 
-    setInterval(function(){
+    $(function () {
 
-        var now = new Date();
-        $("li[class='hours']").html(now.getHours())
-        $("li[class='mins']").html(now.getMinutes())
-        $("li[class='secs']").html(now.getSeconds())
+        $.ajax({
 
 
-    },1000);
+            url:"/user/findUser",
+            type:"get",
+
+            dataType:"JSON",
+            statusCode:{
+                200:function (rel) {
+
+                    $("ul[id='myimgs']").prepend("  <li>\n" +
+                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
+                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
+                        "                        </a>\n" +
+                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
+                        "\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html\">\n" +
+                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li>\n" +
+                        "                                <a href=\"/profile.html#update\">\n" +
+                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
+                        "                            </li>\n" +
+                        "                            <li class=\"divider\"></li>\n" +
+                        "\n" +
+                        "                        </ul>\n" +
+                        "                    </li>")
+
+                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
+                        "                                <strong>"+rel.username+"!</strong>")
+
+                },
+                500:function () {
+
+                    window.location.href="/500.html";
+
+
+                }
+            }
+        })
+
+    })
+
+</script>
+<script>
+
+    $(function () {
+
+        //给首页index.html上传时间
+        $("li[id='Dates']").html(new Date().toLocaleDateString())
+
+        setInterval(function(){
+
+            var now = new Date();
+            $("li[class='hours']").html(now.getHours())
+            $("li[class='mins']").html(now.getMinutes())
+            $("li[class='secs']").html(now.getSeconds())
+
+
+        },1000);
+
+    })
+
 </script>
 
 
@@ -200,30 +254,7 @@
                 </div>
 
                 <ul style="margin-right:0;" id="myimgs" class="nav navbar-nav navbar-right">
-                    <li>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" class="admin-pic img-circle" src="http://api.randomuser.me/portraits/thumb/men/10.jpg">Hi, Dave Mattew <b class="caret"></b>
-                        </a>
-                        <ul style="margin-top:14px;" role="menu" class="dropdown-setting dropdown-menu">
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-user"></span>&#160;&#160;My Profile</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-vcard"></span>&#160;&#160;Account Setting</a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="entypo-lifebuoy"></span>&#160;&#160;Help</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="http://themeforest.net/item/apricot-navigation-admin-dashboard-template/7664475?WT.ac=category_item&WT.z_author=themesmile">
-                                    <span class="entypo-basket"></span>&#160;&#160; Purchase</a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="icon-gear"></span>&#160;&#160;Setting</a>
@@ -381,12 +412,12 @@
                                 <li>
                                     <a class="tooltip-tip2 ajax-load" href="time-line.html" title="Time Line"><i class="entypo-clock"></i><span>Time Line</span></a>
                                 </li>
-                                <li>
-                                    <a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>
-                                </li>
+                                <!--<li>-->
+                                <!--<a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                <!--<a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>-->
+                                <!--</li>-->
                                 <li>
                                     <a class="tooltip-tip2" href="lock-screen.html" title="Lock Screen"><i class="icon-lock"></i><span>Lock Screen</span></a>
                                 </li>

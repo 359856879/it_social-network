@@ -17,5 +17,4 @@ public interface UserMapper extends Mapper<User> {
     public void updates(@Param("userflname") String userflname,@Param("email") String email,@Param("username") String username,@Param("password") String password,@Param("img") String img,@Param("id") Integer id);
 
 
-
 }

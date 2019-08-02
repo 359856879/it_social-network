@@ -66,6 +66,32 @@
                     $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
                         "                                <strong>"+rel.username+"!</strong>")
 
+
+                    $("div[class='col-sm-4']").prepend(" \n" +
+                        "                    <div class=\"panel panel-default\">\n" +
+                        "                        <img class=\"media-object img-circle blog-profile\" data-src=\"holder.js/64x64\" alt=\"64x64\" style='height: 100px; width: 75px;' src=\""+rel.userphoto+"\">\n" +
+                        "                        <hr style=\"margin:0;\">\n" +
+                        "\n" +
+                        "                        <div class=\"panel-body\">\n" +
+                        "                            <p class=\"lead text-center\">"+rel.username+"w</p>\n" +
+                        "                            <p class=\"tex-center social-blog-profile\">\n" +
+                        "                                <a href=\"#\">\n" +
+                        "                                    <span class=\"entypo-facebook-circled\"></span>\n" +
+                        "                                </a>\n" +
+                        "                                <a class=\"tweet-link\" href=\"#\">\n" +
+                        "                                    <span class=\"entypo-twitter-circled\"></span>\n" +
+                        "                                </a>\n" +
+                        "                                <a class=\"gplus-textcolor\" href=\"#\">\n" +
+                        "                                    <span class=\"entypo-instagrem\"></span>\n" +
+                        "                                </a>\n" +
+                        "\n" +
+                        "                            </p>\n" +
+                        "                            <p class=\"social-follower text-center\">A graphics designer, a web developer</p>\n" +
+                        "                            \n" +
+                        "                        </div>\n" +
+                        "                    </div>")
+
+
                 },
                 500:function () {
 
@@ -80,21 +106,179 @@
 
 </script>
 
+<!--显示博客列表-->
+<script>
+
+    $.ajax({
+
+        url:"/borge/showAll",
+        type:"GET",
+        dataType:"JSON",
+
+
+        statusCode:{
+            200:function (rel) {
+
+                var num=0;
+                $(rel).each(function (index,ele) {
+
+                    num++;
+
+                    $("div[class='col-sm-8']").append("<a name='"+ele.borgekey+"'></a><div class=\"blog-list-nest\">\n" +
+                        "                        <div class=\"vendor\">\n" +
+                        "                            <img class=\"img-responsive-media\" src=\""+ele.borgeimg+"\" alt=\"\">\n" +
+                        "                        </div>\n" +
+                        "\n" +
+                        "                        <div class=\"blog-list-content\">\n" +
+                        "                            <h2>"+ele.borgename+"</h2>\n" +
+                        "                            <p>"+ele.borgeintroduce+"</p>\n" +
+                        "\n" +
+                        "                            <p class=\"pull-right\" id='"+num+"'>\n" +
+
+                        "                            </p>\n" +
+                        "                            <ul class=\"list-inline\">\n" +
+                        "                                <li>\n" +
+                        "                                    <a href=\"#\">\n" +
+                        "                                        <span class=\"entypo-network\"></span>&nbsp;"+new Date(ele.borgedate).toLocaleDateString()+new Date(ele.borgedate).toLocaleTimeString()+"</a>\n" +
+                        "                                </li>\n" +
+                        "                                <li>\n" +
+                        "                                    <a href=\"#\">\n" +
+                        "                                        <span class=\"entypo-chat\"></span>&nbsp;"+ele.borgecomnum+"Comments</a>\n" +
+                        "                                </li>\n" +
+                        "                                <li>\n" +
+                        "                                    <a href=\"#\">\n" +
+                        "                                        <span class=\"entypo-share\"></span>&nbsp;"+ele.borgereadnum+" Shares</a>\n" +
+                        "                                </li>\n" +
+                        "                            </ul>\n" +
+                        "                            <hr>\n" +
+                        "                            <button class=\"btn btn-info pull-right\"><a href='/blog-detail.html#"+ele.borgename+"'>Read More</a></button>\n" +
+                        "                            <div style=\"clear:both;\"></div>\n" +
+                        "                        </div>\n" +
+                        "                    </div>")
+
+
+                    var par=ele.borgekey.split(",");
+
+                    for (var i = 0; i < par.length; i++) {
+                        //在页面拼接博客的关键字
+                        $("p[class='pull-right'][id='"+num+"']").append("<span class='label label-default'>"+par[i]+"</span>")
+
+                    }
+
+                })
+
+
+            }
+        }
+    })
+
+</script>
 
 <script>
 
-    //给首页index.html上传时间
-    $("li[id='Dates']").html(new Date().toLocaleDateString())
+    $(function () {
 
-    setInterval(function(){
+        $.ajax({
 
-        var now = new Date();
-        $("li[class='hours']").html(now.getHours())
-        $("li[class='mins']").html(now.getMinutes())
-        $("li[class='secs']").html(now.getSeconds())
+            url:"/borgekey/findAll",
+            type:"GET",
+            dataType:"json",
+            statusCode:{
+
+                //遍历标签集合
+                200:function (rel) {
+
+                    $(rel).each(function (index,ele) {
+
+                        $("ul[id='keys']").append(" <li>\n" +
+                            "                                <a class=\"btn btn-info\" href=\"blog-list.html#"+ele.keyname+"\">"+ele.keyname+"</a>\n" +
+                            "                            </li>")
 
 
-    },1000);
+                    })
+
+
+
+                },
+                500:function () {
+
+                    alert("服务器异常!")
+
+                }
+            }
+
+        })
+
+    })
+
+</script>
+<script>
+
+    $(function () {
+
+        $.ajax({
+            url:"/borge/findHot",
+
+            type:"get",
+
+            dataType:"JSON",
+
+            statusCode:{
+
+                200:function (rel) {
+
+                    $(rel).each(function (index,ele) {
+
+                        $("div[id='hots']").append(" <div class=\"media\">\n" +
+                            "                            <a class=\"pull-left\" href=\"blog-detail.html#"+ele.borgename+"\">\n" +
+                            "                                <img class=\"media-object img-responsive-media\" style='width: 64px;height:64px' data-src=\"\" alt=\"64x64\" src=\""+ele.borgeimg+"\">\n" +
+                            "                            </a>\n" +
+                            "                            <div class=\"media-body\">\n" +
+                            "                                <h5 class=\"media-heading\">"+ele.borgename+"</h5>\n" +
+                            "                                <a class=\"link-comment recentpost-link\" style=\"margin:-10px 0 10px\" href=\"blog-detail.html#"+ele.borgename+"\">"+ele.borgereadnum+"Views</a>\n" +
+                            "                            </div>\n" +
+                            "                        </div>")
+
+
+                    })
+
+
+                },
+                500:function () {
+
+                    window.location.href="/500.html";
+
+                }
+
+            }
+
+
+        })
+
+    })
+
+
+</script>
+
+<script>
+
+   $(function () {
+
+       //给首页index.html上传时间
+       $("li[id='Dates']").html(new Date().toLocaleDateString())
+
+       setInterval(function(){
+
+           var now = new Date();
+           $("li[class='hours']").html(now.getHours())
+           $("li[class='mins']").html(now.getMinutes())
+           $("li[class='secs']").html(now.getSeconds())
+
+
+       },1000);
+
+   })
+
 </script>
 
 <body><div id="awwwards" class="right black"><a href="http://www.awwwards.com/best-websites/apricot-navigation-admin-dashboard-template" target="_blank">best websites of the world</a></div>
@@ -421,12 +605,12 @@
                                 <li>
                                     <a class="tooltip-tip2 ajax-load" href="time-line.html" title="Time Line"><i class="entypo-clock"></i><span>Time Line</span></a>
                                 </li>
-                                <li>
-                                    <a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>
-                                </li>
+                                <!--<li>-->
+                                <!--<a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                <!--<a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>-->
+                                <!--</li>-->
                                 <li>
                                     <a class="tooltip-tip2" href="lock-screen.html" title="Lock Screen"><i class="icon-lock"></i><span>Lock Screen</span></a>
                                 </li>
@@ -672,162 +856,123 @@
                 <!--  BLOG CONTENT -->
                 <div class="col-sm-8">
 
-                    <div class="blog-list-nest">
-                        <div class="vendor">
-                            <img class="img-responsive-media" src="http://lorempixel.com/output/food-q-c-600-300-9.jpg" alt="">
-                        </div>
-
-                        <div class="blog-list-content">
-                            <h2>Article Heading</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>
-
-                            <p class="pull-right">
-                                <span class="label label-default">keyword</span>
-                                <span class="label label-default">tag</span>
-                                <span class="label label-default">post</span>
-                            </p>
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-network"></span>&nbsp;2 Days Ago</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-chat"></span>&nbsp;2 Comments</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-share"></span>&nbsp;14 Shares</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <button class="btn btn-info pull-right">Read More</button>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
 
 
-                    <div class="blog-list-nest">
-                        <div class="vendor youtube-nest">
-                            <iframe width="560" height="315" src="http://www.youtube.com/embed/Pe0jFDPHkzo" frameborder="0" allowfullscreen=""></iframe>
-                        </div>
 
-                        <div class="blog-list-content">
-                            <h2>Godzilla</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>
+                    <!--<div class="blog-list-nest">-->
+                        <!--<div class="vendor youtube-nest">-->
+                            <!--<iframe width="560" height="315" src="http://www.youtube.com/embed/Pe0jFDPHkzo" frameborder="0" allowfullscreen=""></iframe>-->
+                        <!--</div>-->
 
-                            <p class="pull-right">
-                                <span class="label label-default">keyword</span>
-                                <span class="label label-default">tag</span>
-                                <span class="label label-default">post</span>
-                            </p>
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-network"></span>&nbsp;2 Days Ago</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-chat"></span>&nbsp;2 Comments</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-share"></span>&nbsp;14 Shares</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <button class="btn btn-info pull-right">Read More</button>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
+                        <!--<div class="blog-list-content">-->
+                            <!--<h2>Godzilla</h2>-->
+                            <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>-->
+
+                            <!--<p class="pull-right">-->
+                                <!--<span class="label label-default">keyword</span>-->
+                                <!--<span class="label label-default">tag</span>-->
+                                <!--<span class="label label-default">post</span>-->
+                            <!--</p>-->
+                            <!--<ul class="list-inline">-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-network"></span>&nbsp;2 Days Ago</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-chat"></span>&nbsp;2 Comments</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-share"></span>&nbsp;14 Shares</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<hr>-->
+                            <!--<button class="btn btn-info pull-right">Read More</button>-->
+                            <!--<div style="clear:both;"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
 
 
 
 
-                    <div class="blog-list-nest">
-                        <div class="vendor">
-                            <blockquote>
-                                <p>"How can we win when fools can be king"</p>
-                                <p>
-                                    <small>Mattew Bellamy</small>
-                                </p>
-                            </blockquote>
-                        </div>
+                    <!--<div class="blog-list-nest">-->
+                        <!--<div class="vendor">-->
+                            <!--<blockquote>-->
+                                <!--<p>"How can we win when fools can be king"</p>-->
+                                <!--<p>-->
+                                    <!--<small>Mattew Bellamy</small>-->
+                                <!--</p>-->
+                            <!--</blockquote>-->
+                        <!--</div>-->
 
-                        <div class="blog-list-content">
-                            <h2>Muse</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>
+                        <!--<div class="blog-list-content">-->
+                            <!--<h2>Muse</h2>-->
+                            <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>-->
 
-                            <p class="pull-right">
-                                <span class="label label-default">keyword</span>
-                                <span class="label label-default">tag</span>
-                                <span class="label label-default">post</span>
-                            </p>
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-network"></span>&nbsp;2 Days Ago</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-chat"></span>&nbsp;2 Comments</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-share"></span>&nbsp;14 Shares</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <button class="btn btn-info pull-right">Read More</button>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
-
-
+                            <!--<p class="pull-right">-->
+                                <!--<span class="label label-default">keyword</span>-->
+                                <!--<span class="label label-default">tag</span>-->
+                                <!--<span class="label label-default">post</span>-->
+                            <!--</p>-->
+                            <!--<ul class="list-inline">-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-network"></span>&nbsp;2 Days Ago</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-chat"></span>&nbsp;2 Comments</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-share"></span>&nbsp;14 Shares</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<hr>-->
+                            <!--<button class="btn btn-info pull-right">Read More</button>-->
+                            <!--<div style="clear:both;"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
 
-                    <div class="blog-list-nest">
-                        <div class="vendor">
-                            <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/149950304&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>
-                        </div>
-
-                        <div class="blog-list-content">
-                            <h2>Favright</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>
-
-                            <p class="pull-right">
-                                <span class="label label-default">keyword</span>
-                                <span class="label label-default">tag</span>
-                                <span class="label label-default">post</span>
-                            </p>
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-network"></span>&nbsp;2 Days Ago</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-chat"></span>&nbsp;2 Comments</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="entypo-share"></span>&nbsp;14 Shares</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <button class="btn btn-info pull-right">Read More</button>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
 
 
-                    <ul class="pager success">
-                        <li class="previous"><a href="#">�?Older</a>
-                        </li>
-                        <li class="next disabled"><a href="#">Newer �?/a>
-                        </a></li>
-                    </ul>
+                    <!--<div class="blog-list-nest">-->
+                        <!--<div class="vendor">-->
+                            <!--<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/149950304&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>-->
+                        <!--</div>-->
+
+                        <!--<div class="blog-list-content">-->
+                            <!--<h2>Favright</h2>-->
+                            <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</p>-->
+
+                            <!--<p class="pull-right">-->
+                                <!--<span class="label label-default">keyword</span>-->
+                                <!--<span class="label label-default">tag</span>-->
+                                <!--<span class="label label-default">post</span>-->
+                            <!--</p>-->
+                            <!--<ul class="list-inline">-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-network"></span>&nbsp;2 Days Ago</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-chat"></span>&nbsp;2 Comments</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="#">-->
+                                        <!--<span class="entypo-share"></span>&nbsp;14 Shares</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<hr>-->
+                            <!--<button class="btn btn-info pull-right">Read More</button>-->
+                            <!--<div style="clear:both;"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
 
 
 
@@ -843,29 +988,10 @@
 
                 <!--  BLOG SIDE CONTENT -->
                 <div class="col-sm-4">
-                    <div class="panel panel-default">
-                        <img class="media-object img-circle blog-profile" data-src="holder.js/64x64" alt="64x64" src="http://api.randomuser.me/portraits/thumb/men/10.jpg">
-                        <hr style="margin:0;">
-
-                        <div class="panel-body">
-                            <p class="lead text-center">Dave Mattew</p>
-                            <p class="tex-center social-blog-profile">
-                                <a href="#">
-                                    <span class="entypo-facebook-circled"></span>
-                                </a>
-                                <a class="tweet-link" href="#">
-                                    <span class="entypo-twitter-circled"></span>
-                                </a>
-                                <a class="gplus-textcolor" href="#">
-                                    <span class="entypo-instagrem"></span>
-                                </a>
-
-                            </p>
-                            <p class="social-follower text-center">A graphics designer, a web developer, a boyfriend, a friend, a son</p>
 
 
-                        </div>
-                    </div>
+                    <!-- 博主 个人信息简介   -->
+
 
                     <div class="blog-side-nest">
                         <h4 class="text-center">JOIN NEWSLETTER</h4>
@@ -888,91 +1014,91 @@
 
                     </div>
 
-                    <div class="blog-side-nest">
-                        <h4 class="text-left">POPULAR POST</h4>
+                    <div class="blog-side-nest" id="hots">
+                        <h4 class="text-left">Popular Blogs</h4>
                         <hr style="margin:0">
 
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>
-                                <a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">88 Views</a>
-                            </div>
-                        </div>
+                        <!--   热门博客列表展示   -->
+                        <!--<div class="media">-->
+                            <!--<a class="pull-left" href="#">-->
+                                <!--<img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">-->
+                            <!--</a>-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>-->
+                                <!--<a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">88 Views</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>
-                                <a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">90 Views</a>
-                            </div>
-                        </div>
+                        <!--<div class="media">-->
+                            <!--<a class="pull-left" href="#">-->
+                                <!--<img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">-->
+                            <!--</a>-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>-->
+                                <!--<a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">90 Views</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>
-                                <a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">42 Views</a>
-                            </div>
-                        </div>
+                        <!--<div class="media">-->
+                            <!--<a class="pull-left" href="#">-->
+                                <!--<img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">-->
+                            <!--</a>-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>-->
+                                <!--<a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">42 Views</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>
-                                <a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">111 Views</a>
-                            </div>
-                        </div>
+                        <!--<div class="media">-->
+                            <!--<a class="pull-left" href="#">-->
+                                <!--<img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">-->
+                            <!--</a>-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>-->
+                                <!--<a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">111 Views</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>
-                                <a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">123 Views</a>
-                            </div>
-                        </div>
-
+                        <!--<div class="media">-->
+                            <!--<a class="pull-left" href="#">-->
+                                <!--<img class="media-object img-responsive-media" data-src="holder.js/64x64" alt="64x64" src="http://placehold.it/64x64">-->
+                            <!--</a>-->
+                            <!--<div class="media-body">-->
+                                <!--<h5 class="media-heading">Cras sit amet nibh Lorem ipsum dolor si amet</h5>-->
+                                <!--<a class="link-comment recentpost-link" style="margin:-10px 0 10px" href="#">123 Views</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <br>
                     </div>
 
                     <div class="blog-side-nest">
                         <h4 class="text-left">TAG</h4>
                         <hr style="margin:0">
-                        <ul class="list-inline">
-                            <li>
-                                <a class="btn btn-info" href="#">Admin</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Fleet</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Music</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Video</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Typhography</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Computer</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Web Design</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-info" href="#">Movie</a>
-                            </li>
+                        <ul class="list-inline" id="keys">
+
+                            <!--   关键字列表  -->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Admin</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Fleet</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Music</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Video</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Typhography</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Computer</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<a class="btn btn-info" href="#">Web Design</a>-->
+                            <!--</li>-->
+
 
                         </ul>
                     </div>
