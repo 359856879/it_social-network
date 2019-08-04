@@ -16,118 +16,124 @@
 
     <link rel="stylesheet" href="assets/css/extra-pages.css">
 
-
-
-
-
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
-</head>
+    <script type="text/javascript">
 
-<script>
-    //十秒钟页面不动跳转到保护页面
-    function ScreenSaver(settings){
-
-        this.settings = settings;
-        this.nTimeout = this.settings.timeout;
-        document.body.screenSaver = this;
-        // link in to body events
-        document.body.onmousemove = ScreenSaver.prototype.onevent;
-        document.body.onmousedown = ScreenSaver.prototype.onevent;
-        document.body.onkeydown = ScreenSaver.prototype.onevent;
-        document.body.onkeypress = ScreenSaver.prototype.onevent;
-
-        var pThis = this;
-        var f = function(){pThis.timeout();}
-        this.timerID = window.setTimeout(f, this.nTimeout);
-    }
-
-    ScreenSaver.prototype.timeout = function(){
-
-        if ( !this.saver ){
-            //输入想要跳转的网站
-            window.location = 'http://localhost:8080/lock-screen.html';
-        }
-
-    }
-    ScreenSaver.prototype.signal = function(){
-        // alert("鼠标或者键盘在动")
-        if ( this.saver ){
-            this.saver.stop();
-        }
-
-        window.clearTimeout(this.timerID);
-        var pThis = this;
-        var f = function(){pThis.timeout();}
-        this.timerID = window.setTimeout(f, this.nTimeout);
-    }
-    ScreenSaver.prototype.onevent = function(e){
-        this.screenSaver.signal();
-    }
-    var saver;
-    function initScreenSaver(){
-        //这里就是鼠标和键盘无触发时间  到了之后会根据输入的网站跳转
-        saver = new ScreenSaver({timeout:10000});
-    }
-    $(function () {
-
-        initScreenSaver();
-    })
-</script>
-<script>
-
-    $(function () {
-
-        $.ajax({
-
-
-            url:"/user/findUser",
-            type:"get",
-
-            dataType:"JSON",
-            statusCode:{
-                200:function (rel) {
-
-                    $("ul[id='myimgs']").prepend("  <li>\n" +
-                        "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
-                        "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
-                        "                        </a>\n" +
-                        "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
-                        "\n" +
-                        "                            <li>\n" +
-                        "                                <a href=\"/profile.html\">\n" +
-                        "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
-                        "                            </li>\n" +
-                        "                            <li>\n" +
-                        "                                <a href=\"/profile.html#update\">\n" +
-                        "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
-                        "                            </li>\n" +
-                        "                            <li class=\"divider\"></li>\n" +
-                        "\n" +
-                        "                        </ul>\n" +
-                        "                    </li>")
-
-
-                    $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
-                        "                                <strong>"+rel.username+"!</strong>")
-                },
-                500:function () {
-
-                    window.location.href="/500.html";
-
-
-                }
+        var i=0;
+        setInterval('changeColor()',500);
+        function changeColor(){
+            var div=document.getElementById('character'); //获得div元素
+            var colorArr=['#8A2BE2','#DEB887','#7FFF00','#008B8B','#FF1493']; //建立颜色库
+            if(i==colorArr.length){
+                i=0;
+            }else{
+                div.style.color=colorArr[i++%colorArr.length]; //循环颜色
             }
+        }
+
+        $(function () {
+            $.ajax({
+                url:"/timeline/findUserById",
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+
+                    console.log(data)
+                    $.each(data,function (index, ele) {
+                        $("#u01").append(" <li style='background-color: cyan' class=\"time-label\">\n" +
+                            "                                    <span class=\"bg-red\">\n" +
+                            "                                        "+new Date(ele.timeline).toLocaleDateString()+"\n" +
+                            "                                    </span>\n" +
+                            "                                </li>\n" +
+                            "                                <!-- /.timeline-label -->\n" +
+                            "                                <!-- timeline item -->\n" +
+                            "                                <li id='character'>\n" +
+                            "                                    <i class=\"fa fa-envelope bg-time\"></i>\n" +
+                            "                                    <div class=\"timeline-item\">\n" +
+                            "                                        <span class=\"time\"><i class=\"fa fa-clock-o\"></i>"+new Date(ele.timeline).toLocaleTimeString()+"</span>\n" +
+                            "                                        <h3 class=\"timeline-header\"><a href=\"#\"></a> <font size='3px'>You have a message</font></h3>\n" +
+                            "                                        <div class=\"timeline-body\">\n" +
+                            "                                            <font size='5px'>"+ele.info+"</font>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div class='timeline-footer'>\n" +
+                            "                                          "+
+                            "                                         <a onclick='remove("+ele.timelineid+")' class=\"btn btn-danger btn-xs\">Delete</a>\n" +
+                            "                                        </div>\n" +
+                            "                                    </div>\n" +
+                            "                                </li>")
+                    })
+                }
+            })
+
+            $.ajax({
+
+
+                url:"/user/findUser",
+                type:"get",
+
+                dataType:"JSON",
+                statusCode:{
+                    200:function (rel) {
+
+                        $("ul[id='myimgs']").prepend("  <li>\n" +
+                            "                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\">\n" +
+                            "                            <img alt=\"\" class=\"admin-pic img-circle\" src=\""+rel.userphoto+"\">Hi,"+rel.username+"<b class=\"caret\"></b>\n" +
+                            "                        </a>\n" +
+                            "                        <ul style=\"margin-top:14px;\" role=\"menu\" class=\"dropdown-setting dropdown-menu\">\n" +
+                            "\n" +
+                            "                            <li>\n" +
+                            "                                <a href=\"/profile.html\">\n" +
+                            "                                    <span class=\"entypo-user\"></span>&#160;&#160;My Profile</a>\n" +
+                            "                            </li>\n" +
+                            "                            <li>\n" +
+                            "                                <a href=\"/profile.html#update\">\n" +
+                            "                                    <span class=\"entypo-vcard\"></span>&#160;&#160;Account Setting</a>\n" +
+                            "                            </li>\n" +
+                            "                            <li class=\"divider\"></li>\n" +
+                            "\n" +
+                            "                        </ul>\n" +
+                            "                    </li>")
+
+                        $("span[id='myspan']").append(" Welcome back,&nbsp;\n" +
+                            "                                <strong>"+rel.username+"!</strong>")
+
+
+
+                    },
+                    500:function () {
+
+                        window.location.href="/500.html";
+
+
+                    }
+                }
+            })
         })
 
-    })
+       function remove(timelineid) {
 
-</script>
+           $.ajax({
+               url:"timeline/"+timelineid,
+               type:"delete",
+               dataType:"json",
+               statusCode:{
+                   204:function () {
+                       location.reload("time-line.html")
+                   },
+                   500:function () {
+                       alert("网络异常")
+                   }
+               }
+           })
+       }
+
+    </script>
+</head>
 
 <script>
     $(function () {
@@ -146,7 +152,8 @@
     })
 </script>
 
-<body><div id="awwwards" class="right black"><a href="http://www.awwwards.com/best-websites/apricot-navigation-admin-dashboard-template" target="_blank">best websites of the world</a></div>
+<body>
+  <div id="awwwards" class="right black"><a href="http://www.awwwards.com/best-websites/apricot-navigation-admin-dashboard-template" target="_blank">best websites of the world</a></div>
     <!-- Preloader -->
     <div id="preloader">
         <div id="status">&nbsp;</div>
@@ -303,27 +310,8 @@
 
                 <ul style="margin-right:0;" id="myimgs" class="nav navbar-nav navbar-right">
 
-                    <li>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="icon-gear"></span>&#160;&#160;Setting</a>
-                        <ul role="menu" class="dropdown-setting dropdown-menu">
+                    <!-- 用户个人头像 -->
 
-                            <li class="theme-bg">
-                                <div id="button-bg"></div>
-                                <div id="button-bg2"></div>
-                                <div id="button-bg3"></div>
-                                <div id="button-bg5"></div>
-                                <div id="button-bg6"></div>
-                                <div id="button-bg7"></div>
-                                <div id="button-bg8"></div>
-                                <div id="button-bg9"></div>
-                                <div id="button-bg10"></div>
-                                <div id="button-bg11"></div>
-                                <div id="button-bg12"></div>
-                                <div id="button-bg13"></div>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="hidden-xs">
                         <a class="toggle-left" href="#">
                             <span style="font-size:20px;" class="entypo-list-add"></span>
@@ -390,13 +378,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="social.html" title="Social">
-                                <i class="icon-feed"></i>
-                                <span>Social</span>
 
-                            </a>
-                        </li>
                         <li>
                             <a class="tooltip-tip ajax-load" href="media.html" title="Media">
                                 <i class="icon-camera"></i>
@@ -427,7 +409,7 @@
                             <a class="tooltip-tip ajax-load" href="mail.html" title="Mail">
                                 <i class="icon-mail"></i>
                                 <span>mail</span>
-                                <div class="noft-blue">289</div>
+                                <div class="noft-blue"></div>
                             </a>
                         </li>
 
@@ -452,20 +434,14 @@
                                     <a class="tooltip-tip2 ajax-load" href="profile.html" title="Profile Page"><i class="icon-user"></i><span>Profile Page</span></a>
                                 </li>
                                 <li>
-                                    <a class="tooltip-tip2 ajax-load" href="invoice.html" title="Invoice"><i class="entypo-newspaper"></i><span>Invoice</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="pricing_table.html" title="Pricing Table"><i class="fontawesome-money"></i><span>Pricing Table</span></a>
-                                </li>
-                                <li>
                                     <a class="tooltip-tip2 ajax-load" href="time-line.html" title="Time Line"><i class="entypo-clock"></i><span>Time Line</span></a>
                                 </li>
-                                <!--<li>-->
-                                <!--<a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>-->
-                                <!--</li>-->
-                                <!--<li>-->
-                                <!--<a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>-->
-                                <!--</li>-->
+                                <li>
+                                    <a class="tooltip-tip2" href="404.html" title="404 Error Page"><i class="icon-thumbs-down"></i><span>404 Error Page</span></a>
+                                </li>
+                                <li>
+                                    <a class="tooltip-tip2" href="500.html" title="500 Error Page"><i class="icon-thumbs-down"></i><span>500 Error Page</span></a>
+                                </li>
                                 <li>
                                     <a class="tooltip-tip2" href="lock-screen.html" title="Lock Screen"><i class="icon-lock"></i><span>Lock Screen</span></a>
                                 </li>
@@ -643,8 +619,9 @@
 
                             <div class="alert">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
-                                <span class="tittle-alert entypo-info-circled" id="myspan"></span>
-
+                                <span class="tittle-alert entypo-info-circled"></span>
+                                Welcome back,&nbsp;
+                                <strong>Dave mattew!</strong>&nbsp;&nbsp;Your last sig in at Yesterday, 16:54 PM
                             </div>
 
 
@@ -711,100 +688,102 @@
                 <div class="time-wrap">
                     <div class="row">
                         <div class="col-md-12">
+
+
                             <!-- The time line -->
-                            <ul class="timeline">
-                                <!-- timeline time label -->
-                                <li class="time-label">
-                                    <span class="bg-red">
-                                        10 Feb. 2014
-                                    </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-envelope bg-time"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you and email</h3>
-                                        <div class="timeline-body">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et dui id justo rhoncus consequat. Aliquam porttitor, arcu quis ornare ultricies, augue neque fringilla turpis, nec cursus arcu enim nec ante. Duis lacus velit, ultricies nec condimentum at, ultrices id eros. Nullam elementum turpis ut est porttitor porttitor. Mauris eu nunc id neque tempor venenatis. Nulla eu placerat orci, quis gravida nulla. Donec suscipit ligula felis, nec egestas massa aliquet vitae. Cras nec faucibus leo, eu placerat est. Phasellus tortor nulla, congue tristique cursus nec, pellentesque non nunc. Nullam condimentum ante nulla, pellentesque fermentum mi tristique eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet rutrum felis. Ut ultricies mi ut adipiscing fringilla.
-                                        </div>
-                                        <div class='timeline-footer'>
-                                            <a class="btn btn-primary btn-xs">Read more</a>
-                                            <a class="btn btn-danger btn-xs">Delete</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-user bg-time"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-                                        <h3 class="timeline-header no-border"><a href="#">Dominic Pagboo</a> accepted your friend request</h3>
+                            <ul class="timeline" id="u01">
+                                 <!--&lt;!&ndash;timeline time label&ndash;&gt;-->
+                                <!--<li class="time-label">-->
+                                    <!--<span class="bg-red">-->
+                                        <!--10 Feb. 2014-->
+                                    <!--</span>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; /.timeline-label &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-envelope bg-time"></i>-->
+                                    <!--<div class="timeline-item">-->
+                                        <!--<span class="time"><i class="fa fa-clock-o"></i> 12:05</span>-->
+                                        <!--<h3 class="timeline-header"><a href="#">Support Team</a> sent you and email</h3>-->
+                                        <!--<div class="timeline-body">-->
+                                            <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et dui id justo rhoncus consequat. Aliquam porttitor, arcu quis ornare ultricies, augue neque fringilla turpis, nec cursus arcu enim nec ante. Duis lacus velit, ultricies nec condimentum at, ultrices id eros. Nullam elementum turpis ut est porttitor porttitor. Mauris eu nunc id neque tempor venenatis. Nulla eu placerat orci, quis gravida nulla. Donec suscipit ligula felis, nec egestas massa aliquet vitae. Cras nec faucibus leo, eu placerat est. Phasellus tortor nulla, congue tristique cursus nec, pellentesque non nunc. Nullam condimentum ante nulla, pellentesque fermentum mi tristique eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet rutrum felis. Ut ultricies mi ut adipiscing fringilla.-->
+                                        <!--</div>-->
+                                        <!--<div class='timeline-footer'>-->
+                                            <!--<a class="btn btn-primary btn-xs">Read more</a>-->
+                                            <!--<a class="btn btn-danger btn-xs">Delete</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; END timeline item &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-user bg-time"></i>-->
+                                    <!--<div class="timeline-item">-->
+                                        <!--<span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>-->
+                                        <!--<h3 class="timeline-header no-border"><a href="#">Dominic Pagboo</a> accepted your friend request</h3>-->
 
-                                        <div class="timeline-body">
-                                            Vestibulum risus augue, cursus et est sed, pharetra venenatis nibh. Sed hendrerit sollicitudin pretium. Integer consequat suscipit scelerisque. Nullam sagittis, ante et aliquet tincidunt, nunc metus tincidunt ipsum, at gravida lacus nibh eget purus. Nulla euismod est et massa scelerisque, vitae semper diam ultrices. Donec porta condimentum pharetra. Suspendisse tincidunt, mauris vel laoreet aliquet, urna ante tristique nisl, ut sagittis justo neque quis augue. In sollicitudin vel libero interdum varius.
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-comments bg-time"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 40 mins ago</span>
-                                        <h3 class="timeline-header"><a href="#">Ronald deboor</a> commented on your post</h3>
-                                        <div class="timeline-body">
-                                            Pellentesque vel sem in dui porttitor tempus non interdum augue. Aliquam consectetur arcu nec enim vulputate, eget mattis augue rhoncus. Aliquam porttitor cursus metus vitae fringilla. Pellentesque sed ipsum id purus placerat ornare. Mauris bibendum enim tellus,
-                                        </div>
-                                        <div class='timeline-footer'>
-                                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline time label -->
-                                <li class="time-label">
-                                    <span class="bg-green">
-                                        3 Jan. 2014
-                                    </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-camera bg-time"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-                                        <h3 class="timeline-header"><a href="#">Joko Sriyanto</a> Your new friends</h3>
-                                        <div class="timeline-body">
-                                            <img src="http://api.randomuser.me/portraits/thumb/men/40.jpg" alt="..." class='margin'>
-                                            <img src="http://api.randomuser.me/portraits/thumb/women/41.jpg" alt="..." class='margin'>
-                                            <img src="http://api.randomuser.me/portraits/thumb/men/42.jpg" alt="..." class='margin'>
-                                            <img src="http://api.randomuser.me/portraits/thumb/women/43.jpg" alt="..." class='margin'>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-video-camera bg-time"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 5 days ago</span>
-                                        <h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>
-                                        <div class="timeline-body">
-                                            Pellentesque vel sem in dui porttitor tempus non interdum augue. Aliquam consectetur arcu nec enim vulputate, eget mattis augue rhoncus. Aliquam porttitor cursus metus vitae fringilla. Pellentesque sed ipsum id purus placerat ornare. Mauris bibendum enim tellus,
+                                        <!--<div class="timeline-body">-->
+                                            <!--Vestibulum risus augue, cursus et est sed, pharetra venenatis nibh. Sed hendrerit sollicitudin pretium. Integer consequat suscipit scelerisque. Nullam sagittis, ante et aliquet tincidunt, nunc metus tincidunt ipsum, at gravida lacus nibh eget purus. Nulla euismod est et massa scelerisque, vitae semper diam ultrices. Donec porta condimentum pharetra. Suspendisse tincidunt, mauris vel laoreet aliquet, urna ante tristique nisl, ut sagittis justo neque quis augue. In sollicitudin vel libero interdum varius.-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; END timeline item &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-comments bg-time"></i>-->
+                                    <!--<div class="timeline-item">-->
+                                        <!--<span class="time"><i class="fa fa-clock-o"></i> 40 mins ago</span>-->
+                                        <!--<h3 class="timeline-header"><a href="#">Ronald deboor</a> commented on your post</h3>-->
+                                        <!--<div class="timeline-body">-->
+                                            <!--Pellentesque vel sem in dui porttitor tempus non interdum augue. Aliquam consectetur arcu nec enim vulputate, eget mattis augue rhoncus. Aliquam porttitor cursus metus vitae fringilla. Pellentesque sed ipsum id purus placerat ornare. Mauris bibendum enim tellus,-->
+                                        <!--</div>-->
+                                        <!--<div class='timeline-footer'>-->
+                                            <!--<a class="btn btn-warning btn-flat btn-xs">View comment</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; END timeline item &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline time label &ndash;&gt;-->
+                                <!--<li class="time-label">-->
+                                    <!--<span class="bg-green">-->
+                                        <!--3 Jan. 2014-->
+                                    <!--</span>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; /.timeline-label &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-camera bg-time"></i>-->
+                                    <!--<div class="timeline-item">-->
+                                        <!--<span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>-->
+                                        <!--<h3 class="timeline-header"><a href="#">Joko Sriyanto</a> Your new friends</h3>-->
+                                        <!--<div class="timeline-body">-->
+                                            <!--<img src="http://api.randomuser.me/portraits/thumb/men/40.jpg" alt="..." class='margin'>-->
+                                            <!--<img src="http://api.randomuser.me/portraits/thumb/women/41.jpg" alt="..." class='margin'>-->
+                                            <!--<img src="http://api.randomuser.me/portraits/thumb/men/42.jpg" alt="..." class='margin'>-->
+                                            <!--<img src="http://api.randomuser.me/portraits/thumb/women/43.jpg" alt="..." class='margin'>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; END timeline item &ndash;&gt;-->
+                                <!--&lt;!&ndash; timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-video-camera bg-time"></i>-->
+                                    <!--<div class="timeline-item">-->
+                                        <!--<span class="time"><i class="fa fa-clock-o"></i> 5 days ago</span>-->
+                                        <!--<h3 class="timeline-header"><a href="#">Mr. Doe</a> shared a video</h3>-->
+                                        <!--<div class="timeline-body">-->
+                                            <!--Pellentesque vel sem in dui porttitor tempus non interdum augue. Aliquam consectetur arcu nec enim vulputate, eget mattis augue rhoncus. Aliquam porttitor cursus metus vitae fringilla. Pellentesque sed ipsum id purus placerat ornare. Mauris bibendum enim tellus,-->
 
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a href="#" class="btn btn-xs bg-time">See comments</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <li>
-                                    <i class="fa fa-clock-o bg-time"></i>
-                                </li>
+                                        <!--</div>-->
+                                        <!--<div class="timeline-footer">-->
+                                            <!--<a href="#" class="btn btn-xs bg-time">See comments</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--&lt;!&ndash; END timeline item &ndash;&gt;-->
+                                <!--<li>-->
+                                    <!--<i class="fa fa-clock-o bg-time"></i>-->
+                                <!--</li>-->
                             </ul>
                         </div>
                         <!-- /.col -->
@@ -825,6 +804,9 @@
                     <p id="spanDate">
                     <p id="clock">
                 </div>
+                <div class="copyright">Make with Love
+                    <span class="entypo-heart"></span>Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> All Rights Reserved</div>
+                <div class="devider-footer"></div>
 
             </div>
             <!-- / END OF FOOTER -->

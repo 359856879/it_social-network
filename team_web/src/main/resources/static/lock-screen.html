@@ -33,18 +33,28 @@
     <!--页面加载完成执行后台方法 获得原先登录的对象-->
    <script type="text/javascript">
        $(function () {
+
             $.ajax({
-                url:"/U/getUser",
+                url:"/S/getUser",
                 type:"get",
                 dataType:"json",
-                success:function (rel) {
-                    $(rel).each(function (index, ele) {
-                        alert(rel)
-                        $("#Us1").append("<div class=\"lockscreen-name\">"+ele.username+"</div>\n" +
-                            "        <div class=\"lockscreen-image\">\n" +
-                            "            <img src="+ele.userphoto+" alt=\"user image\">\n" +
-                            "        </div>")
-                    })
+                statusCode:{
+
+                    200: function (rel) {
+                        $(rel).each(function (index, ele) {
+
+                            $("#Us1").append("<div class=\"lockscreen-name\">"+ele.username+"</div>\n" +
+                                "        <div class=\"lockscreen-image\">\n" +
+                                "            <img style='width: 100px;height: 100px;' src="+ele.userphoto+">\n" +
+                                "        </div>")
+                        })
+                    },
+                    500:function () {
+
+                        window.location.href="/500.html";
+
+                    }
+
                 }
             })
        })
@@ -56,12 +66,12 @@
 
            }else {
                $.ajax({
-                   url:"/U/login",
+                   url:"/S/login",
                    type:"get",
                    data:{pas:$("#pass").val()},
                    statusCode:{
                        200:function () {
-                           location.href="index.html"
+                           window.location.href="/blog-list.html";
                        },
                        500:function () {
                            $("#ts1").html("<font color='red'>不要偷我😭,我喜欢这个主人</font>")

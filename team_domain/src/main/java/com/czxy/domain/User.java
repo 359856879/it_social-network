@@ -42,7 +42,7 @@ public class User {
 
     private String userip;    //用户当前登录ip
 
-    private List<Discuss> discusses;   //每个用户里都会包含一个属于他底下的 评论对象//                                                      \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             >
+    private List<LUsertype> lUsertype;     //用户类型关联
 
 
     @Override
@@ -62,7 +62,7 @@ public class User {
                 ", userhobby='" + userhobby + '\'' +
                 ", userskills='" + userskills + '\'' +
                 ", userip='" + userip + '\'' +
-                ", discusses=" + discusses +
+                ", lUsertype=" + lUsertype +
                 '}';
     }
 
@@ -178,18 +178,15 @@ public class User {
         this.userip = userip;
     }
 
-    public List<Discuss> getDiscusses() {
-        return discusses;
+    public List<LUsertype> getlUsertype() {
+        return lUsertype;
     }
 
-    public void setDiscusses(List<Discuss> discusses) {
-        this.discusses = discusses;
+    public void setlUsertype(List<LUsertype> lUsertype) {
+        this.lUsertype = lUsertype;
     }
 
-    public User() {
-    }
-
-    public User(Integer userid, String username, String userflname, String usernickname, String userpassword, Integer usertypeid, String useremail, Date userregister, Date userap, Date userlp, String userphoto, String userhobby, String userskills, String userip, List<Discuss> discusses) {
+    public User(Integer userid, String username, String userflname, String usernickname, String userpassword, Integer usertypeid, String useremail, Date userregister, Date userap, Date userlp, String userphoto, String userhobby, String userskills, String userip, List<LUsertype> lUsertype) {
         this.userid = userid;
         this.username = username;
         this.userflname = userflname;
@@ -204,6 +201,10 @@ public class User {
         this.userhobby = userhobby;
         this.userskills = userskills;
         this.userip = userip;
-        this.discusses = discusses;
+        this.lUsertype = lUsertype;
     }
+
+    public User() {
+    }
+
 }

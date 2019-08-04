@@ -24,4 +24,8 @@ public interface BorgeService {
 
     public void addDis(Integer bid,Integer uid,String info);
 
+    public Borge FindBorge(Integer id);
+
+    public void updateBorge(Borge borge);
+
 }

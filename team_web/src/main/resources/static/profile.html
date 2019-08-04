@@ -205,8 +205,6 @@
                     //点亮图标
                     if (rel.usertypeid ==1){
 
-                        alert(rel.usertypeid)
-
                         $("span[id='s01']").html(" <a href=\"#\">\n" +
                             "                                    <span class=\"entypo-facebook-circled\"></span>\n" +
                             "                                </a>")
@@ -318,7 +316,22 @@
     }
 
 </script>
+<script>
+    $(function () {
+        //给当前页面上传时间
+        $("li[id='Dates']").html(new Date().toLocaleDateString())
 
+        setInterval(function(){
+
+            var now = new Date();
+            $("li[class='hours']").html(now.getHours())
+            $("li[class='mins']").html(now.getMinutes())
+            $("li[class='secs']").html(now.getSeconds())
+
+
+        },1000);
+    })
+</script>
 <body><div id="awwwards" class="right black"><a href="http://www.awwwards.com/best-websites/apricot-navigation-admin-dashboard-template" target="_blank">best websites of the world</a></div>
 <!-- Preloader -->
 <div id="preloader">
@@ -437,18 +450,18 @@
             <div id="nt-title-container" class="navbar-left running-text visible-lg">
                 <ul class="date-top">
                     <li class="entypo-calendar" style="margin-right:5px"></li>
-                    <li id="Date"></li>
+                    <li id="Dates"></li>
 
 
                 </ul>
 
                 <ul id="digital-clock" class="digital">
                     <li class="entypo-clock" style="margin-right:5px"></li>
-                    <li class="hour"></li>
+                    <li class="hours"></li>
                     <li>:</li>
-                    <li class="min"></li>
+                    <li class="mins"></li>
                     <li>:</li>
-                    <li class="sec"></li>
+                    <li class="secs"></li>
                     <li class="meridiem"></li>
                 </ul>
                 <ul id="nt-title">
@@ -565,13 +578,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="tooltip-tip ajax-load" href="social.html" title="Social">
-                            <i class="icon-feed"></i>
-                            <span>Social</span>
 
-                        </a>
-                    </li>
                     <li>
                         <a class="tooltip-tip ajax-load" href="media.html" title="Media">
                             <i class="icon-camera"></i>
@@ -591,18 +598,12 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a class="tooltip-tip ajax-load" href="index.html" title="Dashboard">
-                            <i class="icon-window"></i>
-                            <span>Dashboard</span>
 
-                        </a>
-                    </li>
                     <li>
                         <a class="tooltip-tip ajax-load" href="mail.html" title="Mail">
                             <i class="icon-mail"></i>
                             <span>mail</span>
-                            <div class="noft-blue">289</div>
+                            <div class="noft-blue"></div>
                         </a>
                     </li>
 
@@ -626,12 +627,7 @@
                             <li>
                                 <a class="tooltip-tip2 ajax-load" href="profile.html" title="Profile Page"><i class="icon-user"></i><span>Profile Page</span></a>
                             </li>
-                            <li>
-                                <a class="tooltip-tip2 ajax-load" href="invoice.html" title="Invoice"><i class="entypo-newspaper"></i><span>Invoice</span></a>
-                            </li>
-                            <li>
-                                <a class="tooltip-tip2 ajax-load" href="pricing_table.html" title="Pricing Table"><i class="fontawesome-money"></i><span>Pricing Table</span></a>
-                            </li>
+
                             <li>
                                 <a class="tooltip-tip2 ajax-load" href="time-line.html" title="Time Line"><i class="entypo-clock"></i><span>Time Line</span></a>
                             </li>
@@ -829,9 +825,7 @@
                 <div class="col-sm-2">
                     <div class="devider-vertical visible-lg"></div>
                     <div class="btn-group btn-wigdet pull-right visible-lg">
-                        <div class="btn">
-                            Widget</div>
-                        <button data-toggle="dropdown" class="btn dropdown-toggle" type="button">
+
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
@@ -1251,6 +1245,12 @@
     <script type="text/javascript" src="assets/js/main.js"></script>
     <script src="assets/js/flatvideo/jquery.fitvids.js"></script>
 
+</div>
+
+<div align="right">
+    <a class='__cl_weblink' href=
+            'http://stormor.ai/web/chatbot.html?uid=957&key=4f2f242288af11b36852f6f3a3dc67fc' target='_blank'>
+        <img src='http://stormor.ai/web/access_code_icon.jpg'></img></a>
 </div></body>
 
 </html>

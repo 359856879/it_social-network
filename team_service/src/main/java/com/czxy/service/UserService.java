@@ -10,6 +10,7 @@ import com.czxy.domain.User;
 public interface UserService {
 
 
+    User findUserByMail(String useremail);
 
     public User  findUser(Integer id);
 

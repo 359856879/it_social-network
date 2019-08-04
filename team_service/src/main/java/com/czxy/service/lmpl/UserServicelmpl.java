@@ -23,6 +23,20 @@ public class UserServicelmpl implements UserService {
     private UserMapper userMapper;
 
 
+    /**
+     * 根据   用户邮箱  查询用户
+     * @param useremail
+     * @return
+     */
+
+    @Override
+    public User findUserByMail(String useremail) {
+
+        User userByMail = userMapper.findUserByMail(useremail);
+        return userByMail;
+
+    }
+
     @Override
     public User findUser(Integer id) {
         User user = userMapper.selectByPrimaryKey(id);
@@ -75,6 +89,7 @@ public class UserServicelmpl implements UserService {
     //更新登录的ip
     @Override
     public void updateUserIP(User user) {
+
         userMapper.updateByPrimaryKey(user);
     }
 

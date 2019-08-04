@@ -35,16 +35,17 @@
       //获取文本框里的文本值
         var info=$("textarea[id='"+par1+"']").val();
 
-        alert(info)
+        alert("执行操作!")
+
         //发送ajax
         $.ajax({
 
             url:"/borge/publish/"+par1+"/"+info,
             type:"get",
             statusCode:{
-                200:function () {
+                201:function () {
 
-                    window.location.reload("blog-detail.html");
+                    window.location.href="/blog-detail.html";
 
                 },
                 500:function () {
@@ -72,6 +73,7 @@
                     $(rel).each(function (index,ele) {
 
                         num++;
+
                         $("div[class='col-sm-8']").append("<a name="+ele.borgename+"></a><div class=\"blog-list-nest\">\n" +
                             "                        <div class=\"vendor\">\n" +
                             "                            <img class=\"img-responsive-media\" alt='123' src="+ele.borgeimg+">" +
@@ -119,7 +121,7 @@
                             "                                <div class=\"form-group\">\n" +
                             "                                    <textarea id='"+ele.borgeid+"' placeholder=\"Comment\" rows=\"5\" class=\"form-update\"></textarea>\n" +
                             "                                </div>\n" +
-                            "                                <button type=\"submit\" class=\"btn btn-info\" onclick='adds("+ele.borgeid+")'>Submit</button>\n" +
+                            "                                <button type=\"button\" class=\"btn btn-info\" onclick='adds("+ele.borgeid+")'>Submit</button>\n" +
                             "                            </form>\n" +
                             "                        </div></div>")
 
@@ -273,7 +275,7 @@
                         "                        <hr style=\"margin:0;\">\n" +
                         "\n" +
                         "                        <div class=\"panel-body\">\n" +
-                        "                            <p class=\"lead text-center\">"+rel.username+"w</p>\n" +
+                        "                            <p class=\"lead text-center\">"+rel.username+"</p>\n" +
                         "                            <p class=\"tex-center social-blog-profile\">\n" +
                         "                                <a href=\"#\">\n" +
                         "                                    <span class=\"entypo-facebook-circled\"></span>\n" +
@@ -683,13 +685,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="social.html" title="Social">
-                                <i class="icon-feed"></i>
-                                <span>Social</span>
 
-                            </a>
-                        </li>
                         <li>
                             <a class="tooltip-tip ajax-load" href="media.html" title="Media">
                                 <i class="icon-camera"></i>
@@ -710,17 +706,10 @@
                         </li>
 
                         <li>
-                            <a class="tooltip-tip ajax-load" href="index.html" title="Dashboard">
-                                <i class="icon-window"></i>
-                                <span>Dashboard</span>
-
-                            </a>
-                        </li>
-                        <li>
                             <a class="tooltip-tip ajax-load" href="mail.html" title="Mail">
                                 <i class="icon-mail"></i>
                                 <span>mail</span>
-                                <div class="noft-blue">289</div>
+                                <div class="noft-blue"></div>
                             </a>
                         </li>
 
@@ -744,12 +733,7 @@
                                  <li>
                                     <a class="tooltip-tip2 ajax-load" href="profile.html" title="Profile Page"><i class="icon-user"></i><span>Profile Page</span></a>
                                 </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="invoice.html" title="Invoice"><i class="entypo-newspaper"></i><span>Invoice</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="pricing_table.html" title="Pricing Table"><i class="fontawesome-money"></i><span>Pricing Table</span></a>
-                                </li>
+
                                 <li>
                                     <a class="tooltip-tip2 ajax-load" href="time-line.html" title="Time Line"><i class="entypo-clock"></i><span>Time Line</span></a>
                                 </li>

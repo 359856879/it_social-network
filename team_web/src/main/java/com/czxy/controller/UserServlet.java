@@ -68,6 +68,7 @@ public class UserServlet {
 
         //获取图片的名字
         String filename = file.getOriginalFilename();
+
         //下载图片进本地工程
         file.transferTo(new File("G:\\idea arc\\IDEAmaven\\team_work\\team_web\\src\\main\\resources\\static\\assets\\img\\it\\"+filename));
 

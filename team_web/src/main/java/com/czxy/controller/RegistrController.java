@@ -1,6 +1,7 @@
 package com.czxy.controller;
 
 import com.czxy.domain.User;
+import com.czxy.service.TimeLineService;
 import com.czxy.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +13,19 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("R")
-@SuppressWarnings("all")
 public class RegistrController {
 
     //私有化Service
     @Resource
     private UserService userService;
 
+    @Resource
+    private TimeLineService timeLineService;
+
+
     //注册逻辑方法
     @PostMapping("Register/{id}")
-    public ResponseEntity<Void> Register(HttpServletRequest request , User user , @PathVariable String id ,String[] jineng ,String[] hobby){
+    public ResponseEntity<Void> Register(HttpServletRequest request, User user, @PathVariable String id, String[] jineng, String[] hobby) {
         //获取到的数组
 //        System.out.println(Arrays.toString(jineng));
 //        System.out.println(Arrays.toString(hobby));
@@ -42,17 +46,21 @@ public class RegistrController {
         //获取该用户的技能
         //创建一个技能字符串
         String ji = "";
-        //遍历这个数组并转换成String字符串拼接到相对应的对象中
-        int num=jineng.length;
-        int count=0;
-        for (String s : jineng) {
-            count++;
-            if (count!=num){
-                ji += s+",";
-            }else{
-                ji+=s;
-            }
+        int num1=jineng.length;
 
+        int  num1s=0;
+        //遍历这个数组并转换成String字符串拼接到相对应的对象中
+        for (String s : jineng) {
+
+            num1s++;
+
+            if (num1s!=num1){
+                ji += s + ",";
+
+            }else{
+                ji += s;
+
+            }
 
 
         }
@@ -62,19 +70,15 @@ public class RegistrController {
         //获取该用户的爱好
         //创建一个字符串
         String hobbys = "";
+        int num2=hobby.length;
+        int num2s=0;
         //遍历爱好数组并转换成字符串
-        int nums=hobby.length;
-        int counts=0;
-
         for (String h : hobby) {
-            counts++;
-
-            if (counts!=nums){
-                hobbys += h+",";
-
+            num2s++;
+            if (num2s!=num2){
+                hobbys += h + ",";
             }else{
-
-                hobbys += h;
+                hobbys += h ;
             }
 
         }
@@ -86,7 +90,10 @@ public class RegistrController {
 
         //调用service里添加的方法 把这个对象添加进去
         try {
+            String info = "Dear, welcome to our big family！";
             userService.addUser(user1);
+            User user2 = userService.loginUser(user.getUsername(), user.getUserpassword());
+            timeLineService.add(user2.getUserid(),info);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,12 +104,12 @@ public class RegistrController {
 
     //判断登录名是否和库中的重复了
     @GetMapping("getUsername")
-    public ResponseEntity<Void> getUsername(String name){
-        System.out.println("传递过来的用户名:"+name);
+    public ResponseEntity<Void> getUsername(String name) {
+        System.out.println("传递过来的用户名:" + name);
 
         boolean user = userService.getUser(name);
-        System.out.println("结果:"+user);
-        if(user){
+        System.out.println("结果:" + user);
+        if (user) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

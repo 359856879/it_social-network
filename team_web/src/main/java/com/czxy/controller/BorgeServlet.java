@@ -45,8 +45,8 @@ public class BorgeServlet {
 
         }
 
-
     }
+
     //寻找热门文章
     @GetMapping("findHot")
     public ResponseEntity<List<Borge>> findHot(){
@@ -88,6 +88,13 @@ public class BorgeServlet {
         //从域中获取当前登录用户
         User user = (User) request.getSession().getAttribute("user");
         System.out.println("域中的对象:"+user);
+
+        //获取到评论的博客对象
+        Borge borge = borgeService.FindBorge(id);
+        //设置评论数加一
+        borge.setBorgecomnum(borge.getBorgecomnum()+1);
+        //更新数据库中的数据
+        borgeService.updateBorge(borge);
 
         try {
             borgeService.addDis(id,user.getUserid(),info);
